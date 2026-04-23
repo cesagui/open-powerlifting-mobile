@@ -40,7 +40,9 @@ type FilterDraft = {
 
 const TABLE_WIDTH = 556;
 
-const WEIGHT_CLASS_VALUES = ['All', '44', '48', '52', '56', '60', '67.5', '75', '82.5', '90', '90+', '100', '110', '110+', '125', '140', '140+'];
+const TRADITIONAL_WEIGHT_CLASS_VALUES = ['44', '48', '52', '56', '60', '67.5', '75', '82.5', '90', '90+', '100', '110', '110+', '125', '140', '140+'];
+const IPF_MEN_WEIGHT_CLASS_VALUES = ['ipf53', 'ipf59', 'ipf66', 'ipf74', 'ipf83', 'ipf93', 'ipf105', 'ipf120', 'ipfover120'];
+const WEIGHT_CLASS_VALUES = ['All', ...TRADITIONAL_WEIGHT_CLASS_VALUES, ...IPF_MEN_WEIGHT_CLASS_VALUES];
 
 const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   sortBy: ['Dots', 'Wilks', 'Total', 'GL Points'],
@@ -51,7 +53,7 @@ const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   liftType: ['All', 'Full Power', 'Squat Only', 'Bench Only', 'Deadlift Only'],
 };
 
-const TRADITIONAL_WEIGHT_CLASS_OPTIONS = WEIGHT_CLASS_VALUES.filter((option) => option !== 'All');
+const TRADITIONAL_WEIGHT_CLASS_OPTIONS = TRADITIONAL_WEIGHT_CLASS_VALUES;
 
 const SORT_GROUPS: Array<{ heading: string; options: string[] }> = [
   {
@@ -314,6 +316,7 @@ export default function LeaderboardScreen() {
           setDraftFilters((current) => ({
             ...current,
             [section]: value,
+            sex: section === 'weightClass' && isIpfMenWeightClass(value) ? 'M' : current.sex,
           }))
         }
         onClear={clearDraftFilters}
@@ -422,6 +425,7 @@ function FilterModal({
   onApply: () => void;
 }) {
   const [isTraditionalExpanded, setIsTraditionalExpanded] = useState(true);
+  const [isIpfMenExpanded, setIsIpfMenExpanded] = useState(true);
   const unit = useUnitStore((state) => state.unit);
   const options = FILTER_OPTIONS[activeSection];
   const currentValue = draftFilters[activeSection];
@@ -474,7 +478,7 @@ function FilterModal({
                       </Text>
                     </Pressable>
 
-                    <View style={[styles.optionGroupBlock, styles.traditionalGroupBlock]}>
+                    <View style={[styles.optionGroupBlock, styles.weightClassGroupBlock, styles.traditionalGroupBlock]}>
                       <Pressable
                         onPress={() => setIsTraditionalExpanded((value) => !value)}
                         style={styles.optionGroupHeader}>
@@ -487,6 +491,36 @@ function FilterModal({
                       </Pressable>
                       {isTraditionalExpanded
                         ? TRADITIONAL_WEIGHT_CLASS_OPTIONS.map((option) => {
+                            const selected = option === currentValue;
+                            const label = formatWeightClassLabel(option, unit);
+                            return (
+                              <Pressable
+                                key={option}
+                                onPress={() => onSelectOption(activeSection, option)}
+                                style={styles.optionRow}>
+                                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                  {selected ? <View style={styles.radioInner} /> : null}
+                                </View>
+                                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
+                              </Pressable>
+                            );
+                          })
+                        : null}
+                    </View>
+
+                    <View style={[styles.optionGroupBlock, styles.weightClassGroupBlock, styles.traditionalGroupBlock]}>
+                      <Pressable
+                        onPress={() => setIsIpfMenExpanded((value) => !value)}
+                        style={styles.optionGroupHeader}>
+                        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>IPF Men</Text>
+                        <Ionicons
+                          name={isIpfMenExpanded ? 'chevron-up' : 'chevron-down'}
+                          size={16}
+                          color="#9ba3c2"
+                        />
+                      </Pressable>
+                      {isIpfMenExpanded
+                        ? IPF_MEN_WEIGHT_CLASS_VALUES.map((option) => {
                             const selected = option === currentValue;
                             const label = formatWeightClassLabel(option, unit);
                             return (
@@ -582,6 +616,23 @@ function formatWeightClassLabel(value: string, unit: Unit): string {
     return 'All';
   }
 
+  const ipfClassKg = getIpfMenClassKg(value);
+  if (ipfClassKg !== null) {
+    if (value === 'ipfover120') {
+      if (unit === 'kg') {
+        return '120+';
+      }
+
+      return `${Math.round(120 * 2.20462)}+`;
+    }
+
+    if (unit === 'kg') {
+      return `-${ipfClassKg}`;
+    }
+
+    return `-${Math.round(ipfClassKg * 2.20462)}`;
+  }
+
   const asBelowClass = (classValue: string) => `-${classValue}`;
   const asAboveClass = (classValue: string) => `${classValue}+`;
   const isAboveClass = value === '90+' || value === '110+' || value === '140+';
@@ -608,6 +659,24 @@ function formatWeightClassLabel(value: string, unit: Unit): string {
 
   const pounds = Math.round(Number(value) * 2.20462);
   return Number.isFinite(pounds) ? asBelowClass(`${pounds}`) : asBelowClass(value.replace('+', ''));
+}
+
+function isIpfMenWeightClass(value: string): boolean {
+  return IPF_MEN_WEIGHT_CLASS_VALUES.includes(value);
+}
+
+function getIpfMenClassKg(value: string): number | null {
+  if (value === 'ipf53') return 53;
+  if (value === 'ipf59') return 59;
+  if (value === 'ipf66') return 66;
+  if (value === 'ipf74') return 74;
+  if (value === 'ipf83') return 83;
+  if (value === 'ipf93') return 93;
+  if (value === 'ipf105') return 105;
+  if (value === 'ipf120') return 120;
+  if (value === 'ipfover120') return 120;
+
+  return null;
 }
 
 function matchesLiftCriteria(lifter: Lifter, liftCriteria: string): boolean {
@@ -926,6 +995,9 @@ const styles = StyleSheet.create({
   },
   optionGroupBlock: {
     marginBottom: 16,
+  },
+  weightClassGroupBlock: {
+    marginBottom: 0,
   },
   traditionalGroupBlock: {
     marginTop: 8,

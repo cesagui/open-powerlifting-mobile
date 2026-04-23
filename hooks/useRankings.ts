@@ -43,6 +43,16 @@ function mapWeightClass(value: string): string | undefined {
     return undefined;
   }
 
+  if (normalized === 'ipf53') return 'ipf53';
+  if (normalized === 'ipf59') return 'ipf59';
+  if (normalized === 'ipf66') return 'ipf66';
+  if (normalized === 'ipf74') return 'ipf74';
+  if (normalized === 'ipf83') return 'ipf83';
+  if (normalized === 'ipf93') return 'ipf93';
+  if (normalized === 'ipf105') return 'ipf105';
+  if (normalized === 'ipf120') return 'ipf120';
+  if (normalized === 'ipfover120') return 'ipfover120';
+
   if (normalized === '140+') return 'over140';
   if (normalized === '110+') return 'over110';
   if (normalized === '90+') return 'over90';
