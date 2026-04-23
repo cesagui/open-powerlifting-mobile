@@ -42,7 +42,8 @@ const TABLE_WIDTH = 556;
 
 const TRADITIONAL_WEIGHT_CLASS_VALUES = ['44', '48', '52', '56', '60', '67.5', '75', '82.5', '90', '90+', '100', '110', '110+', '125', '140', '140+'];
 const IPF_MEN_WEIGHT_CLASS_VALUES = ['ipf53', 'ipf59', 'ipf66', 'ipf74', 'ipf83', 'ipf93', 'ipf105', 'ipf120', 'ipfover120'];
-const WEIGHT_CLASS_VALUES = ['All', ...TRADITIONAL_WEIGHT_CLASS_VALUES, ...IPF_MEN_WEIGHT_CLASS_VALUES];
+const IPF_WOMEN_WEIGHT_CLASS_VALUES = ['ipf43', 'ipf47', 'ipf52', 'ipf57', 'ipf63', 'ipf69', 'ipf76', 'ipf84', 'ipfover84'];
+const WEIGHT_CLASS_VALUES = ['All', ...TRADITIONAL_WEIGHT_CLASS_VALUES, ...IPF_MEN_WEIGHT_CLASS_VALUES, ...IPF_WOMEN_WEIGHT_CLASS_VALUES];
 
 const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   sortBy: ['Dots', 'Wilks', 'Total', 'GL Points'],
@@ -316,7 +317,14 @@ export default function LeaderboardScreen() {
           setDraftFilters((current) => ({
             ...current,
             [section]: value,
-            sex: section === 'weightClass' && isIpfMenWeightClass(value) ? 'M' : current.sex,
+            sex:
+              section === 'weightClass'
+                ? isIpfMenWeightClass(value)
+                  ? 'M'
+                  : isIpfWomenWeightClass(value)
+                    ? 'F'
+                    : current.sex
+                : current.sex,
           }))
         }
         onClear={clearDraftFilters}
@@ -424,8 +432,9 @@ function FilterModal({
   onClear: () => void;
   onApply: () => void;
 }) {
-  const [isTraditionalExpanded, setIsTraditionalExpanded] = useState(true);
-  const [isIpfMenExpanded, setIsIpfMenExpanded] = useState(true);
+  const [isTraditionalExpanded, setIsTraditionalExpanded] = useState(false);
+  const [isIpfMenExpanded, setIsIpfMenExpanded] = useState(false);
+  const [isIpfWomenExpanded, setIsIpfWomenExpanded] = useState(false);
   const unit = useUnitStore((state) => state.unit);
   const options = FILTER_OPTIONS[activeSection];
   const currentValue = draftFilters[activeSection];
@@ -537,6 +546,36 @@ function FilterModal({
                           })
                         : null}
                     </View>
+
+                    <View style={[styles.optionGroupBlock, styles.weightClassGroupBlock, styles.traditionalGroupBlock]}>
+                      <Pressable
+                        onPress={() => setIsIpfWomenExpanded((value) => !value)}
+                        style={styles.optionGroupHeader}>
+                        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>IPF Women</Text>
+                        <Ionicons
+                          name={isIpfWomenExpanded ? 'chevron-up' : 'chevron-down'}
+                          size={16}
+                          color="#9ba3c2"
+                        />
+                      </Pressable>
+                      {isIpfWomenExpanded
+                        ? IPF_WOMEN_WEIGHT_CLASS_VALUES.map((option) => {
+                            const selected = option === currentValue;
+                            const label = formatWeightClassLabel(option, unit);
+                            return (
+                              <Pressable
+                                key={option}
+                                onPress={() => onSelectOption(activeSection, option)}
+                                style={styles.optionRow}>
+                                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                  {selected ? <View style={styles.radioInner} /> : null}
+                                </View>
+                                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
+                              </Pressable>
+                            );
+                          })
+                        : null}
+                    </View>
                   </>
                 ) : isSortBySection
                   ? SORT_GROUPS.map((group) => (
@@ -616,14 +655,14 @@ function formatWeightClassLabel(value: string, unit: Unit): string {
     return 'All';
   }
 
-  const ipfClassKg = getIpfMenClassKg(value);
+  const ipfClassKg = getIpfClassKg(value);
   if (ipfClassKg !== null) {
-    if (value === 'ipfover120') {
+    if (value === 'ipfover120' || value === 'ipfover84') {
       if (unit === 'kg') {
-        return '120+';
+        return `${ipfClassKg}+`;
       }
 
-      return `${Math.round(120 * 2.20462)}+`;
+      return `${Math.round(ipfClassKg * 2.20462)}+`;
     }
 
     if (unit === 'kg') {
@@ -665,7 +704,20 @@ function isIpfMenWeightClass(value: string): boolean {
   return IPF_MEN_WEIGHT_CLASS_VALUES.includes(value);
 }
 
-function getIpfMenClassKg(value: string): number | null {
+function isIpfWomenWeightClass(value: string): boolean {
+  return IPF_WOMEN_WEIGHT_CLASS_VALUES.includes(value);
+}
+
+function getIpfClassKg(value: string): number | null {
+  if (value === 'ipf43') return 43;
+  if (value === 'ipf47') return 47;
+  if (value === 'ipf52') return 52;
+  if (value === 'ipf57') return 57;
+  if (value === 'ipf63') return 63;
+  if (value === 'ipf69') return 69;
+  if (value === 'ipf76') return 76;
+  if (value === 'ipf84') return 84;
+  if (value === 'ipfover84') return 84;
   if (value === 'ipf53') return 53;
   if (value === 'ipf59') return 59;
   if (value === 'ipf66') return 66;
