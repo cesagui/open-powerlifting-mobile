@@ -43,7 +43,20 @@ const TABLE_WIDTH = 556;
 const TRADITIONAL_WEIGHT_CLASS_VALUES = ['44', '48', '52', '56', '60', '67.5', '75', '82.5', '90', '90+', '100', '110', '110+', '125', '140', '140+'];
 const IPF_MEN_WEIGHT_CLASS_VALUES = ['ipf53', 'ipf59', 'ipf66', 'ipf74', 'ipf83', 'ipf93', 'ipf105', 'ipf120', 'ipfover120'];
 const IPF_WOMEN_WEIGHT_CLASS_VALUES = ['ipf43', 'ipf47', 'ipf52', 'ipf57', 'ipf63', 'ipf69', 'ipf76', 'ipf84', 'ipfover84'];
-const WEIGHT_CLASS_VALUES = ['All', ...TRADITIONAL_WEIGHT_CLASS_VALUES, ...IPF_MEN_WEIGHT_CLASS_VALUES, ...IPF_WOMEN_WEIGHT_CLASS_VALUES];
+const PARA_MEN_WEIGHT_CLASS_VALUES = ['para49', 'para54', 'para59', 'para65', 'para72', 'para80', 'para88', 'para97', 'para107', 'paraover107'];
+const PARA_WOMEN_WEIGHT_CLASS_VALUES = ['para41', 'para45', 'para50', 'para55', 'para61', 'para67', 'para73', 'para79', 'para86', 'paraover86'];
+const WP_MEN_WEIGHT_CLASS_VALUES = ['wp62', 'wp69', 'wp77', 'wp85', 'wp94', 'wp105', 'wp120', 'wpover120'];
+const WP_WOMEN_WEIGHT_CLASS_VALUES = ['wp48', 'wp53', 'wp58', 'wp64', 'wp72', 'wp84', 'wp100', 'wpover100'];
+const WEIGHT_CLASS_VALUES = [
+  'All',
+  ...TRADITIONAL_WEIGHT_CLASS_VALUES,
+  ...IPF_MEN_WEIGHT_CLASS_VALUES,
+  ...IPF_WOMEN_WEIGHT_CLASS_VALUES,
+  ...PARA_MEN_WEIGHT_CLASS_VALUES,
+  ...PARA_WOMEN_WEIGHT_CLASS_VALUES,
+  ...WP_MEN_WEIGHT_CLASS_VALUES,
+  ...WP_WOMEN_WEIGHT_CLASS_VALUES,
+];
 
 const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   sortBy: ['Dots', 'Wilks', 'Total', 'GL Points'],
@@ -323,6 +336,14 @@ export default function LeaderboardScreen() {
                   ? 'M'
                   : isIpfWomenWeightClass(value)
                     ? 'F'
+                    : isParaMenWeightClass(value)
+                      ? 'M'
+                      : isParaWomenWeightClass(value)
+                        ? 'F'
+                        : isWpMenWeightClass(value)
+                          ? 'M'
+                          : isWpWomenWeightClass(value)
+                            ? 'F'
                     : current.sex
                 : current.sex,
           }))
@@ -435,6 +456,10 @@ function FilterModal({
   const [isTraditionalExpanded, setIsTraditionalExpanded] = useState(false);
   const [isIpfMenExpanded, setIsIpfMenExpanded] = useState(false);
   const [isIpfWomenExpanded, setIsIpfWomenExpanded] = useState(false);
+  const [isParaMenExpanded, setIsParaMenExpanded] = useState(false);
+  const [isParaWomenExpanded, setIsParaWomenExpanded] = useState(false);
+  const [isWpMenExpanded, setIsWpMenExpanded] = useState(false);
+  const [isWpWomenExpanded, setIsWpWomenExpanded] = useState(false);
   const unit = useUnitStore((state) => state.unit);
   const options = FILTER_OPTIONS[activeSection];
   const currentValue = draftFilters[activeSection];
@@ -576,6 +601,126 @@ function FilterModal({
                           })
                         : null}
                     </View>
+
+                    <View style={[styles.optionGroupBlock, styles.weightClassGroupBlock, styles.traditionalGroupBlock]}>
+                      <Pressable
+                        onPress={() => setIsParaMenExpanded((value) => !value)}
+                        style={styles.optionGroupHeader}>
+                        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>Para Men</Text>
+                        <Ionicons
+                          name={isParaMenExpanded ? 'chevron-up' : 'chevron-down'}
+                          size={16}
+                          color="#9ba3c2"
+                        />
+                      </Pressable>
+                      {isParaMenExpanded
+                        ? PARA_MEN_WEIGHT_CLASS_VALUES.map((option) => {
+                            const selected = option === currentValue;
+                            const label = formatWeightClassLabel(option, unit);
+                            return (
+                              <Pressable
+                                key={option}
+                                onPress={() => onSelectOption(activeSection, option)}
+                                style={styles.optionRow}>
+                                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                  {selected ? <View style={styles.radioInner} /> : null}
+                                </View>
+                                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
+                              </Pressable>
+                            );
+                          })
+                        : null}
+                    </View>
+
+                    <View style={[styles.optionGroupBlock, styles.weightClassGroupBlock, styles.traditionalGroupBlock]}>
+                      <Pressable
+                        onPress={() => setIsParaWomenExpanded((value) => !value)}
+                        style={styles.optionGroupHeader}>
+                        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>Para Women</Text>
+                        <Ionicons
+                          name={isParaWomenExpanded ? 'chevron-up' : 'chevron-down'}
+                          size={16}
+                          color="#9ba3c2"
+                        />
+                      </Pressable>
+                      {isParaWomenExpanded
+                        ? PARA_WOMEN_WEIGHT_CLASS_VALUES.map((option) => {
+                            const selected = option === currentValue;
+                            const label = formatWeightClassLabel(option, unit);
+                            return (
+                              <Pressable
+                                key={option}
+                                onPress={() => onSelectOption(activeSection, option)}
+                                style={styles.optionRow}>
+                                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                  {selected ? <View style={styles.radioInner} /> : null}
+                                </View>
+                                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
+                              </Pressable>
+                            );
+                          })
+                        : null}
+                    </View>
+
+                    <View style={[styles.optionGroupBlock, styles.weightClassGroupBlock, styles.traditionalGroupBlock]}>
+                      <Pressable
+                        onPress={() => setIsWpMenExpanded((value) => !value)}
+                        style={styles.optionGroupHeader}>
+                        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>WP Men</Text>
+                        <Ionicons
+                          name={isWpMenExpanded ? 'chevron-up' : 'chevron-down'}
+                          size={16}
+                          color="#9ba3c2"
+                        />
+                      </Pressable>
+                      {isWpMenExpanded
+                        ? WP_MEN_WEIGHT_CLASS_VALUES.map((option) => {
+                            const selected = option === currentValue;
+                            const label = formatWeightClassLabel(option, unit);
+                            return (
+                              <Pressable
+                                key={option}
+                                onPress={() => onSelectOption(activeSection, option)}
+                                style={styles.optionRow}>
+                                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                  {selected ? <View style={styles.radioInner} /> : null}
+                                </View>
+                                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
+                              </Pressable>
+                            );
+                          })
+                        : null}
+                    </View>
+
+                    <View style={[styles.optionGroupBlock, styles.weightClassGroupBlock, styles.traditionalGroupBlock]}>
+                      <Pressable
+                        onPress={() => setIsWpWomenExpanded((value) => !value)}
+                        style={styles.optionGroupHeader}>
+                        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>WP Women</Text>
+                        <Ionicons
+                          name={isWpWomenExpanded ? 'chevron-up' : 'chevron-down'}
+                          size={16}
+                          color="#9ba3c2"
+                        />
+                      </Pressable>
+                      {isWpWomenExpanded
+                        ? WP_WOMEN_WEIGHT_CLASS_VALUES.map((option) => {
+                            const selected = option === currentValue;
+                            const label = formatWeightClassLabel(option, unit);
+                            return (
+                              <Pressable
+                                key={option}
+                                onPress={() => onSelectOption(activeSection, option)}
+                                style={styles.optionRow}>
+                                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                  {selected ? <View style={styles.radioInner} /> : null}
+                                </View>
+                                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
+                              </Pressable>
+                            );
+                          })
+                        : null}
+                    </View>
                   </>
                 ) : isSortBySection
                   ? SORT_GROUPS.map((group) => (
@@ -672,6 +817,40 @@ function formatWeightClassLabel(value: string, unit: Unit): string {
     return `-${Math.round(ipfClassKg * 2.20462)}`;
   }
 
+  const paraClassKg = getParaClassKg(value);
+  if (paraClassKg !== null) {
+    if (value === 'paraover107' || value === 'paraover86') {
+      if (unit === 'kg') {
+        return `${paraClassKg}+`;
+      }
+
+      return `${Math.round(paraClassKg * 2.20462)}+`;
+    }
+
+    if (unit === 'kg') {
+      return `-${paraClassKg}`;
+    }
+
+    return `-${Math.round(paraClassKg * 2.20462)}`;
+  }
+
+  const wpClassKg = getWpClassKg(value);
+  if (wpClassKg !== null) {
+    if (value === 'wpover120' || value === 'wpover100') {
+      if (unit === 'kg') {
+        return `${wpClassKg}+`;
+      }
+
+      return `${Math.round(wpClassKg * 2.20462)}+`;
+    }
+
+    if (unit === 'kg') {
+      return `-${wpClassKg}`;
+    }
+
+    return `-${Math.round(wpClassKg * 2.20462)}`;
+  }
+
   const asBelowClass = (classValue: string) => `-${classValue}`;
   const asAboveClass = (classValue: string) => `${classValue}+`;
   const isAboveClass = value === '90+' || value === '110+' || value === '140+';
@@ -708,6 +887,22 @@ function isIpfWomenWeightClass(value: string): boolean {
   return IPF_WOMEN_WEIGHT_CLASS_VALUES.includes(value);
 }
 
+function isParaMenWeightClass(value: string): boolean {
+  return PARA_MEN_WEIGHT_CLASS_VALUES.includes(value);
+}
+
+function isParaWomenWeightClass(value: string): boolean {
+  return PARA_WOMEN_WEIGHT_CLASS_VALUES.includes(value);
+}
+
+function isWpMenWeightClass(value: string): boolean {
+  return WP_MEN_WEIGHT_CLASS_VALUES.includes(value);
+}
+
+function isWpWomenWeightClass(value: string): boolean {
+  return WP_WOMEN_WEIGHT_CLASS_VALUES.includes(value);
+}
+
 function getIpfClassKg(value: string): number | null {
   if (value === 'ipf43') return 43;
   if (value === 'ipf47') return 47;
@@ -727,6 +922,52 @@ function getIpfClassKg(value: string): number | null {
   if (value === 'ipf105') return 105;
   if (value === 'ipf120') return 120;
   if (value === 'ipfover120') return 120;
+
+  return null;
+}
+
+function getParaClassKg(value: string): number | null {
+  if (value === 'para41') return 41;
+  if (value === 'para45') return 45;
+  if (value === 'para50') return 50;
+  if (value === 'para55') return 55;
+  if (value === 'para61') return 61;
+  if (value === 'para67') return 67;
+  if (value === 'para73') return 73;
+  if (value === 'para79') return 79;
+  if (value === 'para86') return 86;
+  if (value === 'paraover86') return 86;
+  if (value === 'para49') return 49;
+  if (value === 'para54') return 54;
+  if (value === 'para59') return 59;
+  if (value === 'para65') return 65;
+  if (value === 'para72') return 72;
+  if (value === 'para80') return 80;
+  if (value === 'para88') return 88;
+  if (value === 'para97') return 97;
+  if (value === 'para107') return 107;
+  if (value === 'paraover107') return 107;
+
+  return null;
+}
+
+function getWpClassKg(value: string): number | null {
+  if (value === 'wp48') return 48;
+  if (value === 'wp53') return 53;
+  if (value === 'wp58') return 58;
+  if (value === 'wp64') return 64;
+  if (value === 'wp72') return 72;
+  if (value === 'wp84') return 84;
+  if (value === 'wp100') return 100;
+  if (value === 'wpover100') return 100;
+  if (value === 'wp62') return 62;
+  if (value === 'wp69') return 69;
+  if (value === 'wp77') return 77;
+  if (value === 'wp85') return 85;
+  if (value === 'wp94') return 94;
+  if (value === 'wp105') return 105;
+  if (value === 'wp120') return 120;
+  if (value === 'wpover120') return 120;
 
   return null;
 }
