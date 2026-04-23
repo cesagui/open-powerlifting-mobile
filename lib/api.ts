@@ -91,8 +91,17 @@ export type MeetResultRow = {
   equipment: string;
   weightClass: string;
   bodyweight: number | null;
+  squat1: number | null;
+  squat2: number | null;
+  squat3: number | null;
   bestSquat: number | null;
+  bench1: number | null;
+  bench2: number | null;
+  bench3: number | null;
   bestBench: number | null;
+  deadlift1: number | null;
+  deadlift2: number | null;
+  deadlift3: number | null;
   bestDeadlift: number | null;
   total: number | null;
   dots: number | null;
@@ -529,8 +538,17 @@ function parseMeetRow(headers: string[], row: string[]): MeetResultRow | null {
     equipment: values.Equipment || '',
     weightClass: values.WeightClassKg || '',
     bodyweight: parseNullableNumber(values.BodyweightKg),
+    squat1: parseNullableNumber(values.Squat1Kg),
+    squat2: parseNullableNumber(values.Squat2Kg),
+    squat3: parseNullableNumber(values.Squat3Kg),
     bestSquat: parseNullableNumber(values.Best3SquatKg),
+    bench1: parseNullableNumber(values.Bench1Kg),
+    bench2: parseNullableNumber(values.Bench2Kg),
+    bench3: parseNullableNumber(values.Bench3Kg),
     bestBench: parseNullableNumber(values.Best3BenchKg),
+    deadlift1: parseNullableNumber(values.Deadlift1Kg),
+    deadlift2: parseNullableNumber(values.Deadlift2Kg),
+    deadlift3: parseNullableNumber(values.Deadlift3Kg),
     bestDeadlift: parseNullableNumber(values.Best3DeadliftKg),
     total: parseNullableNumber(values.TotalKg),
     dots: parseNullableNumber(values.Dots),
@@ -729,8 +747,17 @@ function isSameMeetRow(left: MeetResultRow, right: MeetResultRow): boolean {
     left.equipment === right.equipment &&
     left.weightClass === right.weightClass &&
     left.bodyweight === right.bodyweight &&
+    left.squat1 === right.squat1 &&
+    left.squat2 === right.squat2 &&
+    left.squat3 === right.squat3 &&
     left.bestSquat === right.bestSquat &&
+    left.bench1 === right.bench1 &&
+    left.bench2 === right.bench2 &&
+    left.bench3 === right.bench3 &&
     left.bestBench === right.bestBench &&
+    left.deadlift1 === right.deadlift1 &&
+    left.deadlift2 === right.deadlift2 &&
+    left.deadlift3 === right.deadlift3 &&
     left.bestDeadlift === right.bestDeadlift &&
     left.total === right.total &&
     left.dots === right.dots

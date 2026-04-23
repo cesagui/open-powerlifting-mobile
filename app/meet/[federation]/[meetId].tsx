@@ -14,6 +14,21 @@ function formatLiftValue(value: number | null): string {
   return value.toFixed(1);
 }
 
+function formatAgeValue(value: string): string {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return '-';
+  }
+
+  const numeric = Number(trimmed);
+  if (Number.isFinite(numeric)) {
+    return `${Math.trunc(numeric)}`;
+  }
+
+  return trimmed;
+}
+
 export default function MeetResultsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -106,9 +121,15 @@ export default function MeetResultsScreen() {
               <Text style={[styles.tableHeaderText, styles.equipCol]}>Equip</Text>
               <Text style={[styles.tableHeaderText, styles.classCol]}>Class</Text>
               <Text style={[styles.tableHeaderText, styles.weightCol]}>Weight</Text>
-              <Text style={[styles.tableHeaderText, styles.liftCol]}>Squat</Text>
-              <Text style={[styles.tableHeaderText, styles.liftCol]}>Bench</Text>
-              <Text style={[styles.tableHeaderText, styles.liftCol]}>Deadlift</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>Squat 1</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>Squat 2</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>Squat 3</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>Bench 1</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>Bench 2</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>Bench 3</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>DL 1</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>DL 2</Text>
+              <Text style={[styles.tableHeaderText, styles.attemptCol]}>DL 3</Text>
               <Text style={[styles.tableHeaderText, styles.totalCol]}>Total</Text>
               <Text style={[styles.tableHeaderText, styles.dotsCol]}>Dots</Text>
             </View>
@@ -132,15 +153,21 @@ function MeetRow({ row, rank }: { row: MeetResultRow; rank: number }) {
         {row.name || '-'}
       </Text>
       <Text style={[styles.tableCell, styles.sexCol]}>{row.sex || '-'}</Text>
-      <Text style={[styles.tableCell, styles.ageCol]}>{row.age || '-'}</Text>
+      <Text style={[styles.tableCell, styles.ageCol]}>{formatAgeValue(row.age)}</Text>
       <Text style={[styles.tableCell, styles.equipCol]} numberOfLines={1}>
         {row.equipment || '-'}
       </Text>
       <Text style={[styles.tableCell, styles.classCol]}>{row.weightClass || '-'}</Text>
       <Text style={[styles.tableCell, styles.weightCol]}>{formatNumber(row.bodyweight)}</Text>
-      <Text style={[styles.tableCell, styles.squatText, styles.liftCol]}>{formatLiftValue(row.bestSquat)}</Text>
-      <Text style={[styles.tableCell, styles.benchText, styles.liftCol]}>{formatLiftValue(row.bestBench)}</Text>
-      <Text style={[styles.tableCell, styles.deadliftText, styles.liftCol]}>{formatLiftValue(row.bestDeadlift)}</Text>
+      <Text style={[styles.tableCell, styles.squatText, styles.attemptCol]}>{formatLiftValue(row.squat1)}</Text>
+      <Text style={[styles.tableCell, styles.squatText, styles.attemptCol]}>{formatLiftValue(row.squat2)}</Text>
+      <Text style={[styles.tableCell, styles.squatText, styles.attemptCol]}>{formatLiftValue(row.squat3)}</Text>
+      <Text style={[styles.tableCell, styles.benchText, styles.attemptCol]}>{formatLiftValue(row.bench1)}</Text>
+      <Text style={[styles.tableCell, styles.benchText, styles.attemptCol]}>{formatLiftValue(row.bench2)}</Text>
+      <Text style={[styles.tableCell, styles.benchText, styles.attemptCol]}>{formatLiftValue(row.bench3)}</Text>
+      <Text style={[styles.tableCell, styles.deadliftText, styles.attemptCol]}>{formatLiftValue(row.deadlift1)}</Text>
+      <Text style={[styles.tableCell, styles.deadliftText, styles.attemptCol]}>{formatLiftValue(row.deadlift2)}</Text>
+      <Text style={[styles.tableCell, styles.deadliftText, styles.attemptCol]}>{formatLiftValue(row.deadlift3)}</Text>
       <Text style={[styles.tableCell, styles.totalText, styles.totalCol]}>{formatLiftValue(row.total)}</Text>
       <Text style={[styles.tableCell, styles.dotsText, styles.dotsCol]}>{formatNumber(row.dots)}</Text>
     </View>
@@ -225,7 +252,7 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   resultsTable: {
-    minWidth: 1160,
+    minWidth: 1540,
   },
   tableHeaderRow: {
     flexDirection: 'row',
@@ -287,8 +314,8 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     paddingLeft: 6,
   },
-  liftCol: {
-    width: 96,
+  attemptCol: {
+    width: 72,
     textAlign: 'right',
     paddingLeft: 6,
   },
