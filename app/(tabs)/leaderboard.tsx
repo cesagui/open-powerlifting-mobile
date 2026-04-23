@@ -50,6 +50,17 @@ const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   liftType: ['All', 'Full Power', 'Squat Only', 'Bench Only', 'Deadlift Only'],
 };
 
+const SORT_GROUPS: Array<{ heading: string; options: string[] }> = [
+  {
+    heading: 'Point Sorts',
+    options: ['Dots', 'Wilks', 'GL Points'],
+  },
+  {
+    heading: 'Weight Sorts',
+    options: ['Squat', 'Bench', 'Deadlift', 'Total'],
+  },
+];
+
 const FILTER_SECTIONS: Array<{ key: FilterSectionKey; label: string }> = [
   { key: 'sortBy', label: 'Sort By' },
   { key: 'federation', label: 'Federation' },
@@ -320,8 +331,20 @@ export default function LeaderboardScreen() {
   );
 }
 
-function getScoreLabel(sortBy: string): 'Dots' | 'Wilks' | 'Total' | 'GL' {
+function getScoreLabel(sortBy: string): 'Dots' | 'Wilks' | 'Total' | 'GL' | 'Squat' | 'Bench' | 'Deadlift' {
   const normalized = sortBy.toLowerCase();
+
+  if (normalized.includes('squat')) {
+    return 'Squat';
+  }
+
+  if (normalized.includes('bench')) {
+    return 'Bench';
+  }
+
+  if (normalized.includes('deadlift')) {
+    return 'Deadlift';
+  }
 
   if (normalized.includes('gl')) {
     return 'GL';
@@ -346,7 +369,22 @@ function formatLift(value: number | null): string {
   return value.toFixed(1);
 }
 
-function formatScore(lifter: Lifter, scoreLabel: 'Dots' | 'Wilks' | 'Total' | 'GL'): string {
+function formatScore(
+  lifter: Lifter,
+  scoreLabel: 'Dots' | 'Wilks' | 'Total' | 'GL' | 'Squat' | 'Bench' | 'Deadlift'
+): string {
+  if (scoreLabel === 'Squat') {
+    return formatLift(lifter.squat);
+  }
+
+  if (scoreLabel === 'Bench') {
+    return formatLift(lifter.bench);
+  }
+
+  if (scoreLabel === 'Deadlift') {
+    return formatLift(lifter.deadlift);
+  }
+
   if (scoreLabel === 'Wilks') {
     return formatNumber(lifter.wilks);
   }
@@ -365,7 +403,7 @@ function getExtraMetrics(): Array<'Total'> {
 function formatExtraMetric(
   lifter: Lifter,
   metric: 'Total',
-  _scoreLabel: 'Dots' | 'Wilks' | 'Total' | 'GL'
+  _scoreLabel: 'Dots' | 'Wilks' | 'Total' | 'GL' | 'Squat' | 'Bench' | 'Deadlift'
 ): string {
   return formatLift(lifter.total);
 }
@@ -395,6 +433,7 @@ function FilterModal({
   const currentValue = draftFilters[activeSection];
   const actionBottomGap = Math.max(bottomInset, 12);
   const footerReservedSpace = actionBottomGap + 72;
+  const isSortBySection = activeSection === 'sortBy';
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -427,20 +466,42 @@ function FilterModal({
             <View style={styles.sectionOptionsPane}>
               <Text style={styles.optionHeading}>{sectionLabel(activeSection)}</Text>
               <ScrollView showsVerticalScrollIndicator={false}>
-                {options.map((option) => {
-                  const selected = option === currentValue;
-                  return (
-                    <Pressable
-                      key={option}
-                      onPress={() => onSelectOption(activeSection, option)}
-                      style={styles.optionRow}>
-                      <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
-                        {selected ? <View style={styles.radioInner} /> : null}
+                {isSortBySection
+                  ? SORT_GROUPS.map((group) => (
+                      <View key={group.heading} style={styles.optionGroupBlock}>
+                        <Text style={styles.optionGroupHeading}>{group.heading}</Text>
+                        {group.options.map((option) => {
+                          const selected = option === currentValue;
+                          return (
+                            <Pressable
+                              key={option}
+                              onPress={() => onSelectOption(activeSection, option)}
+                              style={styles.optionRow}>
+                              <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                {selected ? <View style={styles.radioInner} /> : null}
+                              </View>
+                              <Text style={[styles.optionText, selected && styles.optionTextSelected]}>
+                                {option}
+                              </Text>
+                            </Pressable>
+                          );
+                        })}
                       </View>
-                      <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
-                    </Pressable>
-                  );
-                })}
+                    ))
+                  : options.map((option) => {
+                      const selected = option === currentValue;
+                      return (
+                        <Pressable
+                          key={option}
+                          onPress={() => onSelectOption(activeSection, option)}
+                          style={styles.optionRow}>
+                          <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                            {selected ? <View style={styles.radioInner} /> : null}
+                          </View>
+                          <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
+                        </Pressable>
+                      );
+                    })}
               </ScrollView>
             </View>
           </View>
@@ -800,6 +861,17 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     textTransform: 'uppercase',
     marginBottom: 12,
+  },
+  optionGroupBlock: {
+    marginBottom: 16,
+  },
+  optionGroupHeading: {
+    color: '#9ba3c2',
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    marginBottom: 6,
+    letterSpacing: 0.7,
   },
   optionRow: {
     flexDirection: 'row',

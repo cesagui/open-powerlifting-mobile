@@ -87,6 +87,9 @@ function mapSort(value: string): string | undefined {
   if (normalized === 'Wilks') return 'by-wilks';
   if (normalized === 'Total') return 'by-total';
   if (normalized === 'GL Points') return 'by-goodlift';
+  if (normalized === 'Squat') return 'by-squat';
+  if (normalized === 'Bench') return 'by-bench';
+  if (normalized === 'Deadlift') return 'by-deadlift';
 
   return normalized.toLowerCase();
 }
