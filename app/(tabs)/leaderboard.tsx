@@ -6,7 +6,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Switch,
   Text,
   View,
 } from 'react-native';
@@ -90,7 +89,6 @@ export default function LeaderboardScreen() {
   const resetFilters = useFilterStore((state) => state.resetFilters);
 
   const unit = useUnitStore((state) => state.unit);
-  const toggleUnit = useUnitStore((state) => state.toggleUnit);
 
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [activeFilterSection, setActiveFilterSection] = useState<FilterSectionKey>('federation');
@@ -207,16 +205,6 @@ export default function LeaderboardScreen() {
     <View style={[styles.container, { paddingTop: Math.max(insets.top, 8) + 8 }]}>
       <View style={styles.topRow}>
         <Text style={styles.screenTitle}>Leaderboard</Text>
-        <View style={styles.unitToggleRow}>
-          <Text style={styles.unitLabel}>kg</Text>
-          <Switch
-            value={unit === 'lbs'}
-            onValueChange={toggleUnit}
-            thumbColor="#f5f5f5"
-            trackColor={{ false: '#1e2130', true: '#e63012' }}
-          />
-          <Text style={styles.unitLabel}>lbs</Text>
-        </View>
       </View>
 
       <View style={styles.controlsRow}>
@@ -579,7 +567,7 @@ const styles = StyleSheet.create({
   },
   topRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     paddingHorizontal: 12,
     marginBottom: 16,
@@ -587,16 +575,6 @@ const styles = StyleSheet.create({
   screenTitle: {
     color: '#f5f5f5',
     fontSize: 22,
-    fontWeight: '700',
-  },
-  unitToggleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  unitLabel: {
-    color: '#9ba3c2',
-    fontSize: 11,
     fontWeight: '700',
   },
   controlsRow: {
