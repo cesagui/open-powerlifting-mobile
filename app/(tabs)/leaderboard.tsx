@@ -42,7 +42,7 @@ const TABLE_WIDTH = 556;
 
 const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   sortBy: ['Dots', 'Wilks', 'Total', 'GL Points'],
-  federation: ['All', 'IPF', 'USAPL', 'USPA', 'WRPF', 'GPC'],
+  federation: ['All', 'Fully-Tested', 'IPF', 'USAPL', 'USPA', 'WRPF', 'GPC'],
   equipment: ['All', 'Raw', 'Wraps', 'Single-ply', 'Multi-ply', 'Unlimited'],
   sex: ['All', 'M', 'F'],
   weightClass: ['All', '44', '48', '52', '56', '60', '67.5', '75', '82.5', '90', '100', '110', '125', '140+'],
