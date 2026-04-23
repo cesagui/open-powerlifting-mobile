@@ -474,11 +474,11 @@ function FilterModal({
                       </Text>
                     </Pressable>
 
-                    <View style={styles.optionGroupBlock}>
+                    <View style={[styles.optionGroupBlock, styles.traditionalGroupBlock]}>
                       <Pressable
                         onPress={() => setIsTraditionalExpanded((value) => !value)}
                         style={styles.optionGroupHeader}>
-                        <Text style={styles.optionGroupHeading}>Traditional</Text>
+                        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>Traditional</Text>
                         <Ionicons
                           name={isTraditionalExpanded ? 'chevron-up' : 'chevron-down'}
                           size={16}
@@ -927,6 +927,9 @@ const styles = StyleSheet.create({
   optionGroupBlock: {
     marginBottom: 16,
   },
+  traditionalGroupBlock: {
+    marginTop: 8,
+  },
   optionGroupHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -940,6 +943,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 6,
     letterSpacing: 0.7,
+  },
+  traditionalGroupHeading: {
+    fontSize: 14,
   },
   optionRow: {
     flexDirection: 'row',
