@@ -1,6 +1,6 @@
 # OpenLiftingMobile
 
-OpenLiftingMobile is an Expo + React Native app for browsing OpenPowerlifting data on mobile and web.
+OpenLiftingMobile is an Expo + React Native app for browsing OpenPowerlifting data on mobile.
 
 It includes:
 - A leaderboard with filtering, sorting, and infinite scroll
