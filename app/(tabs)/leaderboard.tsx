@@ -19,7 +19,7 @@ import { formatNumber } from '@/lib/format';
 import { buildLifterSlug } from '@/lib/api';
 import { convertLifterWeights } from '@/lib/units';
 import { useFilterStore } from '@/stores/useFilterStore';
-import { useUnitStore } from '@/stores/useUnitStore';
+import { useUnitStore, type Unit } from '@/stores/useUnitStore';
 
 type FilterSectionKey =
   | 'sortBy'
@@ -40,14 +40,18 @@ type FilterDraft = {
 
 const TABLE_WIDTH = 556;
 
+const WEIGHT_CLASS_VALUES = ['All', '44', '48', '52', '56', '60', '67.5', '75', '82.5', '90', '90+', '100', '110', '110+', '125', '140', '140+'];
+
 const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   sortBy: ['Dots', 'Wilks', 'Total', 'GL Points'],
   federation: ['All', 'Fully-Tested', 'IPF', 'USAPL', 'USPA', 'WRPF', 'GPC'],
   equipment: ['All', 'Raw', 'Wraps', 'Single-ply', 'Multi-ply', 'Unlimited'],
   sex: ['All', 'M', 'F'],
-  weightClass: ['All', '44', '48', '52', '56', '60', '67.5', '75', '82.5', '90', '100', '110', '125', '140+'],
+  weightClass: WEIGHT_CLASS_VALUES,
   liftType: ['All', 'Full Power', 'Squat Only', 'Bench Only', 'Deadlift Only'],
 };
+
+const TRADITIONAL_WEIGHT_CLASS_OPTIONS = WEIGHT_CLASS_VALUES.filter((option) => option !== 'All');
 
 const SORT_GROUPS: Array<{ heading: string; options: string[] }> = [
   {
@@ -417,11 +421,14 @@ function FilterModal({
   onClear: () => void;
   onApply: () => void;
 }) {
+  const [isTraditionalExpanded, setIsTraditionalExpanded] = useState(true);
+  const unit = useUnitStore((state) => state.unit);
   const options = FILTER_OPTIONS[activeSection];
   const currentValue = draftFilters[activeSection];
   const actionBottomGap = Math.max(bottomInset, 12);
   const footerReservedSpace = actionBottomGap + 72;
   const isSortBySection = activeSection === 'sortBy';
+  const isWeightClassSection = activeSection === 'weightClass';
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -454,7 +461,50 @@ function FilterModal({
             <View style={styles.sectionOptionsPane}>
               <Text style={styles.optionHeading}>{sectionLabel(activeSection)}</Text>
               <ScrollView showsVerticalScrollIndicator={false}>
-                {isSortBySection
+                {isWeightClassSection ? (
+                  <>
+                    <Pressable
+                      onPress={() => onSelectOption(activeSection, 'All')}
+                      style={styles.optionRow}>
+                      <View style={[styles.radioOuter, currentValue === 'All' && styles.radioOuterSelected]}>
+                        {currentValue === 'All' ? <View style={styles.radioInner} /> : null}
+                      </View>
+                      <Text style={[styles.optionText, currentValue === 'All' && styles.optionTextSelected]}>
+                        All
+                      </Text>
+                    </Pressable>
+
+                    <View style={styles.optionGroupBlock}>
+                      <Pressable
+                        onPress={() => setIsTraditionalExpanded((value) => !value)}
+                        style={styles.optionGroupHeader}>
+                        <Text style={styles.optionGroupHeading}>Traditional</Text>
+                        <Ionicons
+                          name={isTraditionalExpanded ? 'chevron-up' : 'chevron-down'}
+                          size={16}
+                          color="#9ba3c2"
+                        />
+                      </Pressable>
+                      {isTraditionalExpanded
+                        ? TRADITIONAL_WEIGHT_CLASS_OPTIONS.map((option) => {
+                            const selected = option === currentValue;
+                            const label = formatWeightClassLabel(option, unit);
+                            return (
+                              <Pressable
+                                key={option}
+                                onPress={() => onSelectOption(activeSection, option)}
+                                style={styles.optionRow}>
+                                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                  {selected ? <View style={styles.radioInner} /> : null}
+                                </View>
+                                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{label}</Text>
+                              </Pressable>
+                            );
+                          })
+                        : null}
+                    </View>
+                  </>
+                ) : isSortBySection
                   ? SORT_GROUPS.map((group) => (
                       <View key={group.heading} style={styles.optionGroupBlock}>
                         <Text style={styles.optionGroupHeading}>{group.heading}</Text>
@@ -525,6 +575,39 @@ function sectionLabel(section: FilterSectionKey): string {
   if (section === 'sex') return 'Sex';
   if (section === 'weightClass') return 'Weight Class';
   return 'Lift Type';
+}
+
+function formatWeightClassLabel(value: string, unit: Unit): string {
+  if (value === 'All') {
+    return 'All';
+  }
+
+  const asBelowClass = (classValue: string) => `-${classValue}`;
+  const asAboveClass = (classValue: string) => `${classValue}+`;
+  const isAboveClass = value === '90+' || value === '110+' || value === '140+';
+
+  if (unit === 'kg') {
+    if (isAboveClass) {
+      return asAboveClass(value.replace('+', ''));
+    }
+
+    return asBelowClass(value.replace('+', ''));
+  }
+
+  if (value === '90+') {
+    return asAboveClass('198');
+  }
+
+  if (value === '110+') {
+    return asAboveClass('242');
+  }
+
+  if (value === '140+') {
+    return asAboveClass('308');
+  }
+
+  const pounds = Math.round(Number(value) * 2.20462);
+  return Number.isFinite(pounds) ? asBelowClass(`${pounds}`) : asBelowClass(value.replace('+', ''));
 }
 
 function matchesLiftCriteria(lifter: Lifter, liftCriteria: string): boolean {
@@ -764,7 +847,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     minHeight: 480,
-    maxHeight: '86%',
+    height: '80%',
+    maxHeight: '80%',
     overflow: 'hidden',
   },
   sheetHeader: {
@@ -842,6 +926,12 @@ const styles = StyleSheet.create({
   },
   optionGroupBlock: {
     marginBottom: 16,
+  },
+  optionGroupHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6,
   },
   optionGroupHeading: {
     color: '#9ba3c2',
