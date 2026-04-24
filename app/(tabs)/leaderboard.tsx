@@ -58,16 +58,152 @@ const WEIGHT_CLASS_VALUES = [
   ...WP_WOMEN_WEIGHT_CLASS_VALUES,
 ];
 
+const TRADITIONAL_WEIGHT_CLASS_OPTIONS = TRADITIONAL_WEIGHT_CLASS_VALUES;
+const UNITED_STATES_FEDERATION_OPTIONS = ['USAPL', 'USPA'];
+const INTERNATIONAL_FEDERATION_OPTIONS = ['AWPC', 'GPC', 'IPF', 'WRPF'];
+const REGIONAL_FEDERATION_OPTIONS = ['AFRICANPF', 'ASIANPF'];
+const UK_FEDERATION_OPTIONS = ['All UK', 'ALL TESTED UK', 'ALL SCOTTISH', 'ABPU', 'BAWLA', 'BDFPA', 'BP', 'BPC', 'BPF', 'BPO', 'BPU', 'EPA', 'GPC-GB', 'GPC-SCOTLAND', 'ManxPl', 'NIPF', 'ScottishPL', 'UK IPL', 'UK IPL Tested', 'UKPU', 'UKPU Tested', 'UK-UA', 'WelshPA', 'WPRF UK', 'WRPF UK Tested'];
+const BASE_FEDERATION_OPTIONS = ['All', 'Fully-Tested'];
+const ALGERIA_FEDERATION_OPTIONS = ['All Algeria', 'FAPL']
+const ARGENTINA_FEDERATION_OPTIONS = ['All Argentina', 'AAP', 'APUA', 'ARPL', 'FALPO', 'FEPOA', 'WWPL Argentina', 'WRPF Argentina']
+const ARMENIA_FEDERATION_OPTIONS = ['PFA']
+const AUSTRALIA_FEDERATION_OPTIONS = ['All Australia', 'All Tested Australia', 'AAPLF', 'APLA', 'APU', 'AusDFPF', 'AusPF', 'AusPL', 'AusPL Tested', 'CAPO', 'GPC-AUS', 'MM-AUS', 'PA', 'ProRaw', 'SSAU', 'USAPL Australia', 'VDFPA', 'WRPF-AUS']
+const AUSTRIA_FEDERATION_OPTIONS = ['All Austria', 'OEVK', 'WUAP-AUT']
+const AZERI_FEDERATION_OPTIONS = ['All Azeri', 'IPA-AZE']
+const BELARUS_FEDERATION_OPTIONS = ['All Belarus', 'BeIPF', 'GSF Belarus', 'WPPL Belarus', 'WPSF Belarus', 'WRPF Belarus']
+const BELGIUM_FEDERATION_OPTIONS = ['All Belgian', 'All Belgian IPF', 'LFPH', 'VGPF', 'KBGV']
+const BELIZE_FEDERATION_OPTIONS = ['All Belizean', 'BPA']
+const BOLIVIA_FEDERATION_OPTIONS = ['All Bolivian', 'WRPF Bolivia', 'ABP']
+const BOSNIA_HERZEGOVINA_FEDERATION_OPTIONS = ['All Lifters from B & H' ]
+const BRAZIL_FEDERATION_OPTIONS = ['All Brazil', 'CBLB', 'GPC Brazil', 'WRPF Brazil', 'WPPL Brazil', 'PFBD']
+const BULGARIA_FEDERATION_OPTIONS = ['All Bulgarian', 'WRPF Bulgaria', 'BulgarianPF']
+const CANADA_FEDERATION_OPTIONS = ['All Canadian', 'CPA', 'CPC', 'CPF', 'CPL', 'CPO', 'CPU', 'GPC-CAN', 'IPA-CAN', 'RAW-CAN', 'WPCCP', 'WRPF-CAN', 'WRPF-CAN Tested']
+const CHILE_FEDERATION_OPTIONS = ['All Chilean', 'ACHIPO', 'IPL-Chile', 'IPL-Chile Tested', 'WRPF Chile']
+const CHINA_FEDERATION_OPTIONS = ['All Chinese', 'ChinaPA', 'CHNPL', 'HTPL', 'IPF-China','IPL-China', 'IPL-China Tested', 'WP-China']
+const COLOMBIA_FEDERATION_OPTIONS = ['All Colombian', 'FCLP', 'WRPF-Colombia']
+const COSTA_RICA_FEDERATION_OPTIONS = ['WRPF Costa Rica', 'CRPL']
+const CROATIA_FEDERATION_OPTIONS = ['All Croatian', 'Croatia-UA', 'GPA-CRO', 'GPC-CRO', 'HPLS', 'HPLS', 'HPLS-UA', 'HPO', 'WRPF-CRO','WUAP-CRO']
+const CYPRUS_FEDERATION_OPTIONS = ['All Cypriot', 'CyprusPF']
+const CZECH_FEDERATION_OPTIONS = ['All Czech', 'CAST', 'CSST', 'FCST']
+const DENMARK_FEDERATION_OPTIONS = ['All Danish', 'DSF']
+const DOMINICAN_REPUBLIC_FEDERATION_OPTIONS = ['PLRD']
+const ECUADOR_FEDERATION_OPTIONS = ['All Ecuadorian', 'FEFICULP', 'WRPF Ecuador']
+const EGYPT_FEDERATION_OPTIONS = ['All Egyptian', 'EgyptPF', 'WPC Egypt']
+const ESTONIA_FEDERATION_OPTIONS = ['All Estonian', 'EJTL']
+const FINLAND_FEDERATION_OPTIONS = ['All Finnish', 'FPO', 'SVNL', 'WPC Finland']
+const FRANCE_FEDERATION_OPTIONS = ['All French', 'FFForce', 'FSFA', 'GPC France', 'WPC France', 'WRPF France']
+const GEORGIA_FEDERATION_OPTIONS = ['All Georgian', 'WPA-GEO', 'WPPL Georgia']
+const GERMANY_FEDERATION_OPTIONS = ['All German', 'BVDK', 'GDFPF', 'GPU', 'GRAWA', 'PAGermany','UPC-Germany', 'WUAP Germany', 'WPC Germany', 'WRPF Germany']
+const GREECE_FEDERATION_OPTIONS = ['All Greek', 'ESDT', 'GPL', 'HPF']
+const GUATEMALA_FEDERATION_OPTIONS = ['All Guatemalan', 'Fedepotencia']
+const GUYANA_FEDERATION_OPTIONS = ['All Guayenese', 'GAPLF']
+const HONDURAS_FEDERATION_OPTIONS = ['All Honduran', 'WRPF Honduras']
+const HONGKONG_FEDERATION_OPTIONS = ['All Hong Kong', 'HKPF', 'HKWPA']
+const HUNGARY_FEDERATION_OPTIONS = ['All Hungarian', 'HPC', 'Hunpower', 'IPL Hungary', 'WRPF Hungary']
+const ICELAND_FEDERATION_OPTIONS = ['All Icelandic', 'IKF', 'KRAFT', 'RAW-Iceland', 'WPC Iceland', 'WRPF Iceland']
+const INDIA_FEDERATION_OPTIONS = ['All Indian', 'PI', 'WP India', 'WPC-India', 'WRPF India']
+const INDONESIA_FEDERATION_OPTIONS = ['All Indonesian', 'AIWBPA']
+const IRAN_FEDERATION_OPTIONS = ['All Iranian', 'IranBBF']
+const IRAQ_FEDERATION_OPTIONS = ['All Iraqi','IraqPF']
+const IRELAND_FEDERATION_OPTIONS = ['All Irish', 'ABS', 'AlrishPO', 'GPC-IRL', 'IDFPA', 'IDFPF', 'IrishPF', 'IrishPO', 'SPF-IRL', 'WPRF EIRE']
+const ISRAEL_FEDERATION_OPTIONS = ['All Israeli', 'GPC Israel', 'ILPA', 'ILPF', 'IPC', 'NPA', 'WPC-Israel']
+const ITALY_FEDERATION_OPTIONS = ['All Italian', 'FIAP', 'FIPE', 'FIPL', 'IPL Italy', 'WPC Italy', 'WRPF Italy']
+const JAMAICA_FEDERATION_OPTIONS = ['NPAJ']
+const JAPAN_FEDERATION_OPTIONS = ['All Japanese', 'JPA']
+const KAZAKHSTAN_FEDERATION_OPTIONS = ['All Kazakh', 'KPF', 'WPC Kazakhstan', 'WRPF Kazakhstan']
+const KUWAIT_FEDERATION_OPTIONS = ['All Kuwaiti', 'KPC', 'KuwaitPL']
+const KYRGYZSTAN_FEDERATION_OPTIONS = ['All Kyrgyzstani', 'WPC Kyrgyzstan']
+const LATVIA_FEDERATION_OPTIONS = ['All Latvian', 'GPC-LAT', 'LPF', 'WPC Latvia', 'WRPF Latvia']
+const LEBANON_FEDERATION_OPTIONS = ['All Lebanese', 'LebanonPF']
+const LIBYA_FEDERATION_OPTIONS = ['All Libyan', 'LibyaPF']
+const LITHUANIA_FEDERATION_OPTIONS = ['All Lithuanian', 'LJTF', 'WRPF Lithuania']
+const LUXEMBOURG_FEDERATION_OPTIONS = ['PWFL']
+const MALAYSIA_FEDERATION_OPTIONS = ['All Malaysian' , 'MPA', 'MAP']
+const MALTA_FEDERATION_OPTIONS = ['MaltaPA']
+const MEXICO_FEDERATION_OPTIONS = ['All Mexican', 'FEMEPRO', 'LMP', 'FELIPOME', 'WRPF-MEX', 'WPPL Mexico']
+const MOLDOVA_FEDERATION_OPTIONS = ['All Moldovan', 'WPC Moldova']
+const MONGOLIA_FEDERATION_OPTIONS = ['All Mongolian', 'MUPF']
+const MOROCCO_FEDERATION_OPTIONS = ['All Moroccan', 'FMPB']
+
+const FEDERATION_GROUPS = [
+  { key: 'international', label: 'International', options: INTERNATIONAL_FEDERATION_OPTIONS },
+  { key: 'regional', label: 'Regional', options: REGIONAL_FEDERATION_OPTIONS },
+  { key: 'uk', label: 'United Kingdom', options: UK_FEDERATION_OPTIONS },
+  { key: 'unitedStates', label: 'United States', options: UNITED_STATES_FEDERATION_OPTIONS },
+  { key: 'algeria', label: 'Algeria', options: ALGERIA_FEDERATION_OPTIONS },
+  { key: 'argentina', label: 'Argentina', options: ARGENTINA_FEDERATION_OPTIONS },
+  { key: 'armenia', label: 'Armenia', options: ARMENIA_FEDERATION_OPTIONS },
+  { key: 'australia', label: 'Australia', options: AUSTRALIA_FEDERATION_OPTIONS },
+  { key: 'austria', label: 'Austria', options: AUSTRIA_FEDERATION_OPTIONS },
+  { key: 'azerbaijan', label: 'Azerbaijan', options: AZERI_FEDERATION_OPTIONS },
+  { key: 'belarus', label: 'Belarus', options: BELARUS_FEDERATION_OPTIONS },
+  { key: 'belgium', label: 'Belgium', options: BELGIUM_FEDERATION_OPTIONS },
+  { key: 'belize', label: 'Belize', options: BELIZE_FEDERATION_OPTIONS },
+  { key: 'bolivia', label: 'Bolivia', options: BOLIVIA_FEDERATION_OPTIONS },
+  { key: 'bosniaHerzegovina', label: 'Bosnia and Herzegovina', options: BOSNIA_HERZEGOVINA_FEDERATION_OPTIONS },
+  { key: 'brazil', label: 'Brazil', options: BRAZIL_FEDERATION_OPTIONS },
+  { key: 'bulgaria', label: 'Bulgaria', options: BULGARIA_FEDERATION_OPTIONS },
+  { key: 'canada', label: 'Canada', options: CANADA_FEDERATION_OPTIONS },
+  { key: 'chile', label: 'Chile', options: CHILE_FEDERATION_OPTIONS },
+  { key: 'china', label: 'China', options: CHINA_FEDERATION_OPTIONS },
+  { key: 'colombia', label: 'Colombia', options: COLOMBIA_FEDERATION_OPTIONS },
+  { key: 'costaRica', label: 'Costa Rica', options: COSTA_RICA_FEDERATION_OPTIONS },
+  { key: 'croatia', label: 'Croatia', options: CROATIA_FEDERATION_OPTIONS },
+  { key: 'cyprus', label: 'Cyprus', options: CYPRUS_FEDERATION_OPTIONS },
+  { key: 'czechia', label: 'Czechia', options: CZECH_FEDERATION_OPTIONS },
+  { key: 'denmark', label: 'Denmark', options: DENMARK_FEDERATION_OPTIONS },
+  { key: 'dominicanRepublic', label: 'Dominican Republic', options: DOMINICAN_REPUBLIC_FEDERATION_OPTIONS },
+  { key: 'ecuador', label: 'Ecuador', options: ECUADOR_FEDERATION_OPTIONS },
+  { key: 'egypt', label: 'Egypt', options: EGYPT_FEDERATION_OPTIONS },
+  { key: 'estonia', label: 'Estonia', options: ESTONIA_FEDERATION_OPTIONS },
+  { key: 'finland', label: 'Finland', options: FINLAND_FEDERATION_OPTIONS },
+  { key: 'france', label: 'France', options: FRANCE_FEDERATION_OPTIONS },
+  { key: 'georgia', label: 'Georgia', options: GEORGIA_FEDERATION_OPTIONS },
+  { key: 'germany', label: 'Germany', options: GERMANY_FEDERATION_OPTIONS },
+  { key: 'greece', label: 'Greece', options: GREECE_FEDERATION_OPTIONS },
+  { key: 'guatemala', label: 'Guatemala', options: GUATEMALA_FEDERATION_OPTIONS },
+  { key: 'guyana', label: 'Guyana', options: GUYANA_FEDERATION_OPTIONS },
+  { key: 'honduras', label: 'Honduras', options: HONDURAS_FEDERATION_OPTIONS },
+  { key: 'hongKong', label: 'Hong Kong', options: HONGKONG_FEDERATION_OPTIONS },
+  { key: 'hungary', label: 'Hungary', options: HUNGARY_FEDERATION_OPTIONS },
+  { key: 'iceland', label: 'Iceland', options: ICELAND_FEDERATION_OPTIONS },
+  { key: 'india', label: 'India', options: INDIA_FEDERATION_OPTIONS },
+  { key: 'indonesia', label: 'Indonesia', options: INDONESIA_FEDERATION_OPTIONS },
+  { key: 'iran', label: 'Iran', options: IRAN_FEDERATION_OPTIONS },
+  { key: 'iraq', label: 'Iraq', options: IRAQ_FEDERATION_OPTIONS },
+  { key: 'ireland', label: 'Ireland', options: IRELAND_FEDERATION_OPTIONS },
+  { key: 'israel', label: 'Israel', options: ISRAEL_FEDERATION_OPTIONS },
+  { key: 'italy', label: 'Italy', options: ITALY_FEDERATION_OPTIONS },
+  { key: 'jamaica', label: 'Jamaica', options: JAMAICA_FEDERATION_OPTIONS },
+  { key: 'japan', label: 'Japan', options: JAPAN_FEDERATION_OPTIONS },
+  { key: 'kazakhstan', label: 'Kazakhstan', options: KAZAKHSTAN_FEDERATION_OPTIONS },
+  { key: 'kuwait', label: 'Kuwait', options: KUWAIT_FEDERATION_OPTIONS },
+  { key: 'kyrgyzstan', label: 'Kyrgyzstan', options: KYRGYZSTAN_FEDERATION_OPTIONS },
+  { key: 'latvia', label: 'Latvia', options: LATVIA_FEDERATION_OPTIONS },
+  { key: 'lebanon', label: 'Lebanon', options: LEBANON_FEDERATION_OPTIONS },
+  { key: 'libya', label: 'Libya', options: LIBYA_FEDERATION_OPTIONS },
+  { key: 'lithuania', label: 'Lithuania', options: LITHUANIA_FEDERATION_OPTIONS },
+  { key: 'luxembourg', label: 'Luxembourg', options: LUXEMBOURG_FEDERATION_OPTIONS },
+  { key: 'malaysia', label: 'Malaysia', options: MALAYSIA_FEDERATION_OPTIONS },
+  { key: 'malta', label: 'Malta', options: MALTA_FEDERATION_OPTIONS },
+  { key: 'mexico', label: 'Mexico', options: MEXICO_FEDERATION_OPTIONS },
+  { key: 'moldova', label: 'Moldova', options: MOLDOVA_FEDERATION_OPTIONS },
+  { key: 'mongolia', label: 'Mongolia', options: MONGOLIA_FEDERATION_OPTIONS },
+  { key: 'morocco', label: 'Morocco', options: MOROCCO_FEDERATION_OPTIONS },
+
+] as const;
+
+const GROUPED_FEDERATION_OPTIONS = Array.from(new Set(FEDERATION_GROUPS.flatMap((group) => group.options)));
+const FEDERATION_FILTER_OPTIONS = Array.from(new Set([...BASE_FEDERATION_OPTIONS, ...GROUPED_FEDERATION_OPTIONS]));
+
 const FILTER_OPTIONS: Record<FilterSectionKey, string[]> = {
   sortBy: ['Dots', 'Wilks', 'Total', 'GL Points'],
-  federation: ['All', 'Fully-Tested', 'IPF', 'USAPL', 'USPA', 'WRPF', 'GPC'],
+  federation: FEDERATION_FILTER_OPTIONS,
   equipment: ['All', 'Raw', 'Wraps', 'Single-ply', 'Multi-ply', 'Unlimited'],
   sex: ['All', 'M', 'F'],
   weightClass: WEIGHT_CLASS_VALUES,
   liftType: ['All', 'Full Power', 'Squat Only', 'Bench Only', 'Deadlift Only'],
 };
-
-const TRADITIONAL_WEIGHT_CLASS_OPTIONS = TRADITIONAL_WEIGHT_CLASS_VALUES;
 
 const SORT_GROUPS: Array<{ heading: string; options: string[] }> = [
   {
@@ -460,6 +596,9 @@ function FilterModal({
   const [isParaWomenExpanded, setIsParaWomenExpanded] = useState(false);
   const [isWpMenExpanded, setIsWpMenExpanded] = useState(false);
   const [isWpWomenExpanded, setIsWpWomenExpanded] = useState(false);
+  const [expandedFederationGroups, setExpandedFederationGroups] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(FEDERATION_GROUPS.map((group) => [group.key, false])) as Record<string, boolean>
+  );
   const unit = useUnitStore((state) => state.unit);
   const options = FILTER_OPTIONS[activeSection];
   const currentValue = draftFilters[activeSection];
@@ -467,6 +606,10 @@ function FilterModal({
   const footerReservedSpace = actionBottomGap + 72;
   const isSortBySection = activeSection === 'sortBy';
   const isWeightClassSection = activeSection === 'weightClass';
+  const isFederationSection = activeSection === 'federation';
+  const sortedFederationOptions = options
+    .filter((option) => !GROUPED_FEDERATION_OPTIONS.includes(option))
+    .sort((a, b) => a.localeCompare(b));
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -744,6 +887,42 @@ function FilterModal({
                         })}
                       </View>
                     ))
+                  : isFederationSection
+                    ? (
+                        <>
+                          {sortedFederationOptions.map((option) => {
+                              const selected = option === currentValue;
+                              return (
+                                <Pressable
+                                  key={option}
+                                  onPress={() => onSelectOption(activeSection, option)}
+                                  style={styles.optionRow}>
+                                  <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                    {selected ? <View style={styles.radioInner} /> : null}
+                                  </View>
+                                  <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
+                                </Pressable>
+                              );
+                            })}
+
+                          {FEDERATION_GROUPS.map((group) => (
+                            <FederationOptionGroup
+                              key={group.key}
+                              heading={group.label}
+                              options={group.options}
+                              expanded={Boolean(expandedFederationGroups[group.key])}
+                              currentValue={currentValue}
+                              onToggle={() =>
+                                setExpandedFederationGroups((current) => ({
+                                  ...current,
+                                  [group.key]: !current[group.key],
+                                }))
+                              }
+                              onSelectOption={(value) => onSelectOption(activeSection, value)}
+                            />
+                          ))}
+                        </>
+                      )
                   : options.map((option) => {
                       const selected = option === currentValue;
                       return (
@@ -783,6 +962,48 @@ function FilterModal({
         </Pressable>
       </Pressable>
     </Modal>
+  );
+}
+
+function FederationOptionGroup({
+  heading,
+  options,
+  expanded,
+  currentValue,
+  onToggle,
+  onSelectOption,
+}: {
+  heading: string;
+  options: readonly string[];
+  expanded: boolean;
+  currentValue: string;
+  onToggle: () => void;
+  onSelectOption: (value: string) => void;
+}) {
+  return (
+    <View style={styles.optionGroupBlock}>
+      <Pressable onPress={onToggle} style={styles.optionGroupHeader}>
+        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>{heading}</Text>
+        <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={16} color="#9ba3c2" />
+      </Pressable>
+
+      {expanded
+        ? options.map((option) => {
+            const selected = option === currentValue;
+            return (
+              <Pressable
+                key={option}
+                onPress={() => onSelectOption(option)}
+                style={[styles.optionRow, styles.nestedOptionRow]}>
+                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                  {selected ? <View style={styles.radioInner} /> : null}
+                </View>
+                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
+              </Pressable>
+            );
+          })
+        : null}
+    </View>
   );
 }
 
@@ -1317,6 +1538,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     gap: 10,
+  },
+  nestedOptionRow: {
+    paddingLeft: 10,
   },
   radioOuter: {
     width: 24,
