@@ -991,12 +991,13 @@ function FilterModal({
                               );
                             })}
 
-                          {FEDERATION_GROUPS.map((group) => (
+                          {FEDERATION_GROUPS.map((group, index) => (
                             <FederationOptionGroup
                               key={group.key}
                               heading={group.label}
                               options={group.options}
                               expanded={Boolean(expandedFederationGroups[group.key])}
+                              containerStyle={index === 0 ? styles.firstFederationGroup : undefined}
                               currentValue={currentValue}
                               onToggle={() =>
                                 setExpandedFederationGroups((current) => ({
@@ -1055,6 +1056,7 @@ function FederationOptionGroup({
   heading,
   options,
   expanded,
+  containerStyle,
   currentValue,
   onToggle,
   onSelectOption,
@@ -1062,12 +1064,13 @@ function FederationOptionGroup({
   heading: string;
   options: readonly string[];
   expanded: boolean;
+  containerStyle?: object;
   currentValue: string;
   onToggle: () => void;
   onSelectOption: (value: string) => void;
 }) {
   return (
-    <View style={styles.optionGroupBlock}>
+    <View style={[styles.optionGroupBlock, containerStyle]}>
       <Pressable onPress={onToggle} style={styles.optionGroupHeader}>
         <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>{heading}</Text>
         <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={16} color="#9ba3c2" />
@@ -1595,6 +1598,9 @@ const styles = StyleSheet.create({
   },
   optionGroupBlock: {
     marginBottom: 16,
+  },
+  firstFederationGroup: {
+    marginTop: 8,
   },
   weightClassGroupBlock: {
     marginBottom: 0,
