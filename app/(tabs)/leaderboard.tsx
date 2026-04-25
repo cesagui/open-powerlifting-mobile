@@ -59,11 +59,11 @@ const WEIGHT_CLASS_VALUES = [
 ];
 
 const TRADITIONAL_WEIGHT_CLASS_OPTIONS = TRADITIONAL_WEIGHT_CLASS_VALUES;
-const UNITED_STATES_FEDERATION_OPTIONS = ['USAPL', 'USPA'];
-const INTERNATIONAL_FEDERATION_OPTIONS = ['AWPC', 'GPC', 'IPF', 'WRPF'];
-const REGIONAL_FEDERATION_OPTIONS = ['AFRICANPF', 'ASIANPF'];
-const UK_FEDERATION_OPTIONS = ['All UK', 'ALL TESTED UK', 'ALL SCOTTISH', 'ABPU', 'BAWLA', 'BDFPA', 'BP', 'BPC', 'BPF', 'BPO', 'BPU', 'EPA', 'GPC-GB', 'GPC-SCOTLAND', 'ManxPl', 'NIPF', 'ScottishPL', 'UK IPL', 'UK IPL Tested', 'UKPU', 'UKPU Tested', 'UK-UA', 'WelshPA', 'WPRF UK', 'WRPF UK Tested'];
-const BASE_FEDERATION_OPTIONS = ['All', 'Fully-Tested'];
+const UNITED_STATES_FEDERATION_OPTIONS = ['All USA', 'All Tested USA', '365Strong', 'AAPF', 'AAU', 'ADAU', 'APFPF', 'AmericanSA', 'AMP' , 'AmPU' , 'APA' , 'APC', 'APF', 'APO' , 'FHSAA', 'IHSPLA' , 'IPA', 'LHSPLA', 'MHSPLA', 'MM', 'NPL', 'NASA', 'Next Gen PF', 'NMAA', 'Nor Cal', 'PLU', 'PRIDE', '100Raw', 'RawIronPL', 'RAWU', 'RPS', 'RUPC', 'SLP', 'SPF', 'SSA', 'THSPA', 'THSWPA', 'UPA', 'USAPL', 'USPA' , 'USPA Tested', 'USPC', 'USPC Tested', 'USPF', 'USSF', 'USSports', 'WABDL', 'WarriorPLF', 'WNPF', 'WP-USA', 'WRPF USA' , 'WRPF USA Tested', 'WUAP USA', 'XPC', 'XPS'];
+const INTERNATIONAL_FEDERATION_OPTIONS = ['AWPC', 'GPA', 'GPC', 'GPC and Affiliates', 'GPF', 'IBSA', 'IntDFPA', 'IPF', 'IPL', 'IRP', 'WDFPF', 'WP', 'WPA', 'WPC', 'WPF', 'WPO', 'WPPL','WPU', 'WPPO', 'WUAP',  'WRPF'];
+const REGIONAL_FEDERATION_OPTIONS = ['AfricanPF', 'AsianPF', 'CommonwealthPF', 'EPF', 'FESUPO', 'NAPF', 'NordicPF', 'OceaniaPF', 'ORPF', 'WRPF-Latam', ''];
+const UK_FEDERATION_OPTIONS = ['All UK', 'All Tested UK', 'All Scottish', 'ABPU', 'BAWLA', 'BDFPA', 'BP', 'BPC', 'BPF', 'BPO', 'BPU', 'EPA', 'GPC-GB', 'GPC-SCOTLAND', 'ManxPl', 'NIPF', 'ScottishPL', 'UK IPL', 'UK IPL Tested', 'UKPU', 'UKPU Tested', 'UK-UA', 'WelshPA', 'WPRF UK', 'WRPF UK Tested'];
+const BASE_FEDERATION_OPTIONS = ['All Feds', 'All Fully-Tested Feds', 'All Tested Lifters'];
 const ALGERIA_FEDERATION_OPTIONS = ['All Algeria', 'FAPL']
 const ARGENTINA_FEDERATION_OPTIONS = ['All Argentina', 'AAP', 'APUA', 'ARPL', 'FALPO', 'FEPOA', 'WWPL Argentina', 'WRPF Argentina']
 const ARMENIA_FEDERATION_OPTIONS = ['PFA']
@@ -124,6 +124,50 @@ const MEXICO_FEDERATION_OPTIONS = ['All Mexican', 'FEMEPRO', 'LMP', 'FELIPOME', 
 const MOLDOVA_FEDERATION_OPTIONS = ['All Moldovan', 'WPC Moldova']
 const MONGOLIA_FEDERATION_OPTIONS = ['All Mongolian', 'MUPF']
 const MOROCCO_FEDERATION_OPTIONS = ['All Moroccan', 'FMPB']
+const NAURU_FEDERATION_OPTIONS = ['All Nauruan', 'NauruPF', 'WP-Nauru']
+const NEPAL_FEDERATION_OPTIONS = ['All Nepalese', 'NYFC']
+const NETHERLANDS_FEDERATION_OPTIONS = ['All Dutch', 'DPL', 'KNKF-SP', 'PLH']
+const NEW_ZEALAND_FEDERATION_OPTIONS = ['All New Zealand', 'CAPO-NZ', 'GPC-NZ', 'IPL-NZ', 'NZPF', 'NZPU', 'NZPU Tested', 'WP-NZ']
+const NICARAGUA_FEDERATION_OPTIONS = ['All Nicaraguan', 'WRPF-NIC']
+const NIUE_FEDERATION_OPTIONS = ['All Niue', 'WP-Niue']
+const NORWAY_FEDERATION_OPTIONS = ['All Norwegian', 'NSF']
+const OMAN_FEDERATION_OPTIONS = ['All Oman', 'OCWP']
+const PANAMA_FEDERATION_OPTIONS = ['All Panamanian', 'FPP']
+const PAPUANEWGUINEA_FEDERATION_OPTIONS = ['All Papua New Guinean', 'PNGPF']
+const PARAGUAY_FEDERATION_OPTIONS = ['All Paraguayan', 'APP (Paraguay)']
+const PERU_FEDERATION_OPTIONS = ['All Peruvian', 'FDNLP', 'WRPF-Peru']
+const PHILLIPPINES_FEDERATION_OPTIONS = ['All Phillippine', 'PAP', 'PHPL']
+const POLAND_FEDERATION_OPTIONS = ['All Polish', 'GPC Poland', 'PLTRAW','PZKFiTS', 'WPC Poland', 'WRPF-POL', 'XPC Poland']
+const PORTUGAL_FEDERATION_OPTIONS = ['All Portguese', 'APP (Portugal)', 'GPC Portugal', 'WPC Portugal', 'WRPF Portugal']
+const QATAR_FEDERATION_OPTIONS = ['All Qatar', 'QatarPL', 'QATAR-UA', 'WRPF-Qatar']
+const RUSSIA_FEDERATION_OPTIONS = ['All Russian', 'BB', 'FBPD', 'FPR', 'GPC-RUS', 'NAP', 'RPU', 'SCT', 'SPSS', 'IPL-Russia', 'IPL-Russia Tested', 'Vityaz', 'WPA-RUS', 'WPC-RUS', 'WPF-RUS', 'WRPF', 'WPPL Russia']
+const SAUDI_ARABIA_FEDERATION_OPTIONS = ['All Saudi', 'SSSC']
+const SERBIA_FEDERATION_OPTIONS = ['All Serbian', 'PLSS', 'USPS', 'WRPF-Serbia']
+const SINGAPORE_FEDERATION_OPTIONS = ['All Singaporean', 'PS','SPA']
+const SLOVAKIA_FEDERATION_OPTIONS = ['All Slovak', 'SAFKST', 'SAST', 'WPC-SVK', 'WUAP-SVK']
+const SLOVENIA_FEDERATION_OPTIONS = ['All Slovenian', 'PLZS', 'WRPF Slovenia']
+const SOUTH_AFRICA_FEDERATION_OPTIONS = ['All South African', 'RhinoPC', 'SAPF', 'WPC-SA']
+const SOUTH_KOREA_FEDERATION_OPTIONS = ['All South Korean', 'POSK']
+const SPAIN_FEDERATION_OPTIONS = ['All Spanish', 'AEP', 'CPI', 'IPL Spain', 'WRPF Spain']
+const SRI_LANKA_FEDERATION_OPTIONS = ['All Sri Lankan', 'SLPF', 'WP-Lanka']
+const SWEDEN_FEDERATION_OPTIONS = ['All Swedish', 'SSF', 'WRPF Sweden']
+const SWITZERLAND_FEDERATION_OPTIONS = ['All Swiss', 'KDKS', 'SDFPF', 'Swiss PL']
+const SYRIA_FEDERATION_OPTIONS = ['All Syrian', 'SAFP']
+const TAIWAN_FEDERATION_OPTIONS = ['All Taiwanese', 'CTPA']
+const TRINIDAD_AND_TOBAGO_FEDERATION_OPTIONS = ['TTPF']
+const THAILAND_FEDERATION_OPTIONS = ['All Thai', 'ThaiPF', 'TAAP']
+const TURKEY_FEDERATION_OPTIONS = ['All Turkish', 'TPSSF',]
+const UAE_FEDERATION_OPTIONS = ['All UAE', 'UAEPL', 'WRPF-UAE']
+const UGANDA_FEDERATION_OPTIONS = ['All Ugandan', 'Uganda PA', 'Uganda PF']
+const UKRAINE_FEDERATION_OPTIONS = ['All Ukrainian', 'GPC-GUPU', 'GPC-UKR', 'RAW-UKR', 'UDFPF', 'Ukraine PA', 'Ukraine PF', 'Ukraine PO', 'UPC', 'UPL', 'URPF', 'WPAU', 'WPC-UKR', 'WPF-KRAWA', 'WPLeague', 'WPUF', 'WPPL-Ukraine']
+const URUGUAY_FEDERATION_OPTIONS = ['All Uruguayan', 'FULP']
+const US_VIRGIN_ISLANDS_FEDERATION_OPTIONS = ['All US Virgin Islands', 'USVIPF', ]
+const VENEZUELA_FEDERATION_OPTIONS = ['All Venezuelan', 'FEVEPO', 'WRPF Venezuela']
+const VIETNAM_FEDERATION_OPTIONS = ['All Vietnamese' , 'VietnamPA', 'VNPL', 'VPF', 'WRPF Vietnam']
+
+
+
+
 
 const FEDERATION_GROUPS = [
   { key: 'international', label: 'International', options: INTERNATIONAL_FEDERATION_OPTIONS },
@@ -190,6 +234,46 @@ const FEDERATION_GROUPS = [
   { key: 'moldova', label: 'Moldova', options: MOLDOVA_FEDERATION_OPTIONS },
   { key: 'mongolia', label: 'Mongolia', options: MONGOLIA_FEDERATION_OPTIONS },
   { key: 'morocco', label: 'Morocco', options: MOROCCO_FEDERATION_OPTIONS },
+  { key: 'nauru', label: 'Nauru', options: NAURU_FEDERATION_OPTIONS },
+  { key: 'nepal', label: 'Nepal', options: NEPAL_FEDERATION_OPTIONS },
+  { key: 'netherlands', label: 'Netherlands', options: NETHERLANDS_FEDERATION_OPTIONS },
+  { key: 'newZealand', label: 'New Zealand', options: NEW_ZEALAND_FEDERATION_OPTIONS },
+  { key: 'nicaragua', label: 'Nicaragua', options: NICARAGUA_FEDERATION_OPTIONS },
+  { key: 'niue', label: 'Niue', options: NIUE_FEDERATION_OPTIONS },
+  { key: 'norway', label: 'Norway', options: NORWAY_FEDERATION_OPTIONS },
+  { key: 'oman', label: 'Oman', options: OMAN_FEDERATION_OPTIONS },
+  { key: 'panama', label: 'Panama', options: PANAMA_FEDERATION_OPTIONS },
+  { key: 'papuaNewGuinea', label: 'Papua New Guinea', options: PAPUANEWGUINEA_FEDERATION_OPTIONS },
+  { key: 'paraguay', label: 'Paraguay', options: PARAGUAY_FEDERATION_OPTIONS },
+  { key: 'peru', label: 'Peru', options: PERU_FEDERATION_OPTIONS },
+  { key: 'philippines', label: 'Philippines', options: PHILLIPPINES_FEDERATION_OPTIONS },
+  { key: 'poland', label: 'Poland', options: POLAND_FEDERATION_OPTIONS },
+  { key: 'portugal', label: 'Portugal', options: PORTUGAL_FEDERATION_OPTIONS },
+  { key: 'qatar', label: 'Qatar', options: QATAR_FEDERATION_OPTIONS },
+  { key: 'russia', label: 'Russia', options: RUSSIA_FEDERATION_OPTIONS },
+  { key: 'saudiArabia', label: 'Saudi Arabia', options: SAUDI_ARABIA_FEDERATION_OPTIONS },
+  { key: 'serbia', label: 'Serbia', options: SERBIA_FEDERATION_OPTIONS },
+  { key: 'singapore', label: 'Singapore', options: SINGAPORE_FEDERATION_OPTIONS },
+  { key: 'slovakia', label: 'Slovakia', options: SLOVAKIA_FEDERATION_OPTIONS },
+  { key: 'slovenia', label: 'Slovenia', options: SLOVENIA_FEDERATION_OPTIONS },
+  { key: 'southAfrica', label: 'South Africa', options: SOUTH_AFRICA_FEDERATION_OPTIONS },
+  { key: 'southKorea', label: 'South Korea', options: SOUTH_KOREA_FEDERATION_OPTIONS },
+  { key: 'spain', label: 'Spain', options: SPAIN_FEDERATION_OPTIONS },
+  { key: 'sriLanka', label: 'Sri Lanka', options: SRI_LANKA_FEDERATION_OPTIONS },
+  { key: 'sweden', label: 'Sweden', options: SWEDEN_FEDERATION_OPTIONS },
+  { key: 'switzerland', label: 'Switzerland', options: SWITZERLAND_FEDERATION_OPTIONS },
+  { key: 'syria', label: 'Syria', options: SYRIA_FEDERATION_OPTIONS },
+  { key: 'taiwan', label: 'Taiwan', options: TAIWAN_FEDERATION_OPTIONS },
+  { key: 'thailand', label: 'Thailand', options: THAILAND_FEDERATION_OPTIONS },
+  { key: 'trinidadAndTobago', label: 'Trinidad and Tobago', options: TRINIDAD_AND_TOBAGO_FEDERATION_OPTIONS },
+  { key: 'turkey', label: 'Turkey', options: TURKEY_FEDERATION_OPTIONS },
+  { key: 'uae', label: 'United Arab Emirates', options: UAE_FEDERATION_OPTIONS },
+  { key: 'uganda', label: 'Uganda', options: UGANDA_FEDERATION_OPTIONS },
+  { key: 'ukraine', label: 'Ukraine', options: UKRAINE_FEDERATION_OPTIONS },
+  { key: 'uruguay', label: 'Uruguay', options: URUGUAY_FEDERATION_OPTIONS },
+  { key: 'usVirginIslands', label: 'US Virgin Islands', options: US_VIRGIN_ISLANDS_FEDERATION_OPTIONS },
+  { key: 'venezuela', label: 'Venezuela', options: VENEZUELA_FEDERATION_OPTIONS },
+  { key: 'vietnam', label: 'Vietnam', options: VIETNAM_FEDERATION_OPTIONS },
 
 ] as const;
 
@@ -480,8 +564,10 @@ export default function LeaderboardScreen() {
                           ? 'M'
                           : isWpWomenWeightClass(value)
                             ? 'F'
-                    : current.sex
-                : current.sex,
+                            : current.sex
+                : section === 'sex'
+                  ? value
+                  : current.sex,
           }))
         }
         onClear={clearDraftFilters}

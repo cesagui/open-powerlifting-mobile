@@ -33,7 +33,18 @@ function normalizeFilterValue(value: string): string | undefined {
 }
 
 const FEDERATION_REPLACEMENTS: Record<string, string> = {
-  'all uk': 'all-uk',
+    'all feds' : '',
+    'all fully-tested feds' : 'fully-tested', 
+    'all tested lifters' : 'all-tested',
+    'all usa' : 'all-usa',
+    'all tested usa' : 'all-usa-tested',
+    'uspa tested' : 'uspa-tested',
+    'uspc tested' : 'uspc-tested',
+    'wrpf usa' : 'wrpf-usa',
+    'wrpf usa tested' : 'wrpf-usa-tested',
+    'wuap usa' : 'wuap-usa',
+    'gpc and affiliates' : 'gpcaff',
+    'all uk': 'all-uk',
   'all tested uk' : 'all-uk-tested',
   'all scottish' : 'all-scotland',
   'uk ipl tested' : 'ukipl-tested',
@@ -140,7 +151,63 @@ const FEDERATION_REPLACEMENTS: Record<string, string> = {
   'all moldovan' : 'all-moldova',
   'wpc moldova' : 'wpc-moldova',
   'all mongolian' : 'all-mongolian',
-  'all moroccan' : 'all-morocco'
+  'all moroccan' : 'all-morocco',
+  'all nauruan' : 'all-naura',
+  'all nepalese' : 'all-nepal',
+  'all dutch' : 'all-netherlands',
+  'all new zealand' : 'all-newzealand',
+  'nzpu tested' : 'nzpu-tested',
+  'all nicaraguan' : 'all-nicaraguan',
+  'all nieue' : 'all-niue',
+  'all norwegian' : 'all-norway',
+  'all oman' : 'all-oman',
+  'all panama' : 'all-panama',
+  'all papua new guinean' : 'all-papuanewguinea',
+  'all paraguayan' : 'all-paraguay',
+  'all peruvian' : 'all-peru',
+  'all phillippine' : 'all-phillippines',
+  'all polish' : 'all-poland',
+  'gpc poland' : 'gpc-pol',
+  'wpc poland' : 'wpc-poland',
+  'xpc poland' : 'xpc-poland',
+  'all portuguese' : 'all-portugal',
+  'app (paraguay)' : 'apparaguay',
+  'app (portugal)' : 'apportugal',
+  'gpc portugal' : 'gpc-portugal',
+  'wpc portugal' : 'wpc-portugal',
+  'wrpf portugal' : 'wrpf-portugal',
+  'all qatar' : 'all-qatar',
+  'all russian' : 'all-russia',
+  'ipl-russia tested' : 'iplrussia-tested',
+  'wppl russia' : 'wppl-russia', 
+  'all saudi' : 'all-saudiarabia',
+  'all serbian' : 'all-serbia',
+  'all singaporean' : 'all-singapore',
+  'all slovak' : 'all-slovakia',
+  'all slovenian' : 'all-slovenia',
+  'wrpf slovenia' : 'wrpf-slovenia',
+  'all south african' : 'all-southafrica',
+  'all south korean' : 'all-southkorean',
+  'all spanish' : 'all-spain',
+  'ipl spain' : 'ipl-spain',
+  'wrpf spain' : 'wrpf-spain',
+  'all sri lankan' : 'all-srilanka',
+  'all swedish' : 'all-sweden',
+  'wrpf sweden' : 'wrpf-sweden',
+  'all swiss' : 'all-switzerland',
+  'all syrian' : 'all-syria',
+  'all taiwanese' : 'all-taiwan',
+  'all thai' : 'all-thailand',
+  'all turkish' : 'all-turkey',
+  'all uae' : 'all-uae',
+  'all ugandan' : 'all-uganda',
+  'all ukrainian' : 'all-ukraine',
+  'all uruguayan' : 'all-uruguay',
+  'all us virgin islands' : 'all-usvirginislands',
+  'all venezuelan' : 'all venezuela',
+  'wrpf venezuela' : 'wrpf-venezuela',
+  'all vietnamese' : 'all-vietnam',
+  'wrpf vietnam' : 'wrpf-vietnam'
 };
 
 function mapFederation(value: string): string | undefined {
@@ -151,8 +218,8 @@ function mapFederation(value: string): string | undefined {
 
   const normalizedLower = normalized.toLowerCase();
   const replacement = FEDERATION_REPLACEMENTS[normalizedLower];
-  if (replacement) {
-    return replacement;
+  if (replacement !== undefined) {
+    return replacement || undefined;
   }
 
   return normalizedLower.replace(/\s+/g, '');
