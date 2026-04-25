@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { fetchAthleteProfile, type AthleteCompetitionRow } from '@/lib/api';
+import { DataLoadState } from '@/components/DataLoadState';
+import { fetchAthleteProfile, isNetworkError, type AthleteCompetitionRow } from '@/lib/api';
 import { formatNumber } from '@/lib/format';
 
 function formatLiftValue(value: number | null): string {
@@ -51,18 +52,18 @@ export default function AthleteScreen() {
   }
 
   if (athleteQuery.isError || !athlete) {
+    const offline = isNetworkError(athleteQuery.error);
+
     return (
       <View style={[styles.screen, styles.centered, { paddingTop: insets.top + 24 }]}>
-        <Text style={styles.errorTitle}>Unable to load athlete</Text>
-        <Text style={styles.stateText}>Please try again.</Text>
-        <View style={styles.actionRow}>
-          <Pressable style={styles.actionButton} onPress={() => athleteQuery.refetch()}>
-            <Text style={styles.actionButtonLabel}>Retry</Text>
-          </Pressable>
-          <Pressable style={styles.secondaryButton} onPress={() => router.back()}>
-            <Text style={styles.secondaryButtonLabel}>Close</Text>
-          </Pressable>
-        </View>
+        <DataLoadState
+          title="Unable to load athlete"
+          message="Please try again."
+          isOffline={offline}
+          onRetry={() => athleteQuery.refetch()}
+          secondaryLabel="Close"
+          onSecondaryAction={() => router.back()}
+        />
       </View>
     );
   }

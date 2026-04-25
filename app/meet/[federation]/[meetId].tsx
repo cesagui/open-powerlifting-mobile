@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { fetchMeetResults, type MeetResultRow } from '@/lib/api';
+import { DataLoadState } from '@/components/DataLoadState';
+import { fetchMeetResults, isNetworkError, type MeetResultRow } from '@/lib/api';
 import { formatNumber } from '@/lib/format';
 
 function formatLiftValue(value: number | null): string {
@@ -68,18 +69,18 @@ export default function MeetResultsScreen() {
   }
 
   if (meetQuery.isError || !meet) {
+    const offline = isNetworkError(meetQuery.error);
+
     return (
       <View style={[styles.screen, styles.centered, { paddingTop: insets.top + 24 }]}>
-        <Text style={styles.errorTitle}>Unable to load meet</Text>
-        <Text style={styles.stateText}>Please try again.</Text>
-        <View style={styles.actionRow}>
-          <Pressable style={styles.actionButton} onPress={() => meetQuery.refetch()}>
-            <Text style={styles.actionButtonLabel}>Retry</Text>
-          </Pressable>
-          <Pressable style={styles.secondaryButton} onPress={() => router.back()}>
-            <Text style={styles.secondaryButtonLabel}>Back</Text>
-          </Pressable>
-        </View>
+        <DataLoadState
+          title="Unable to load meet"
+          message="Please try again."
+          isOffline={offline}
+          onRetry={() => meetQuery.refetch()}
+          secondaryLabel="Back"
+          onSecondaryAction={() => router.back()}
+        />
       </View>
     );
   }

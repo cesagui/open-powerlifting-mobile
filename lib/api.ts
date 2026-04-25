@@ -151,6 +151,17 @@ const MEET_PAGE_URL = 'https://www.openpowerlifting.org/m';
 const PAGE_SIZE = 50;
 const DEFAULT_WEB_CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
+const NETWORK_ERROR_PATTERNS = [
+  /network request failed/i,
+  /failed to fetch/i,
+  /load failed/i,
+  /internet/i,
+  /offline/i,
+  /timed out/i,
+  /timeout/i,
+  /networkerror/i,
+];
+
 type RankingsWindow = {
   start: number;
   end: number;
@@ -376,6 +387,19 @@ async function fetchOpenPowerlifting(url: string, init?: RequestInit): Promise<R
     // Browser requests are blocked by CORS on direct OPL endpoints.
     return fetch(buildWebProxyUrl(url), init);
   }
+}
+
+export function isNetworkError(error: unknown): boolean {
+  if (!error) {
+    return false;
+  }
+
+  if (error instanceof TypeError) {
+    return true;
+  }
+
+  const message = error instanceof Error ? error.message : String(error);
+  return NETWORK_ERROR_PATTERNS.some((pattern) => pattern.test(message));
 }
 
 function buildWebProxyUrl(url: string): string {

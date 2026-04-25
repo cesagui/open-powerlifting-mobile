@@ -13,10 +13,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { DataLoadState } from '@/components/DataLoadState';
 import { useRankings } from '@/hooks/useRankings';
 import type { Lifter } from '@/lib/api';
 import { formatNumber } from '@/lib/format';
-import { buildLifterSlug } from '@/lib/api';
+import { buildLifterSlug, isNetworkError } from '@/lib/api';
 import { convertLifterWeights } from '@/lib/units';
 import { useFilterStore } from '@/stores/useFilterStore';
 import { useUnitStore, type Unit } from '@/stores/useUnitStore';
@@ -413,18 +414,18 @@ export default function LeaderboardScreen() {
   }
 
   if (rankingsQuery.isError) {
+    const offline = isNetworkError(rankingsQuery.error);
+
     return (
       <View style={[styles.container, styles.centered]}>
-        <Text style={styles.stateTitle}>Unable to load leaderboard</Text>
-        <Text style={styles.stateText}>Please try again.</Text>
-        <View style={styles.stateActions}>
-          <Pressable style={styles.actionButton} onPress={() => rankingsQuery.refetch()}>
-            <Text style={styles.actionButtonLabel}>Retry</Text>
-          </Pressable>
-          <Pressable style={styles.secondaryButton} onPress={resetFilters}>
-            <Text style={styles.secondaryButtonLabel}>Reset Filters</Text>
-          </Pressable>
-        </View>
+        <DataLoadState
+          title="Unable to load leaderboard"
+          message="Please try again."
+          isOffline={offline}
+          onRetry={() => rankingsQuery.refetch()}
+          secondaryLabel="Reset Filters"
+          onSecondaryAction={resetFilters}
+        />
       </View>
     );
   }
