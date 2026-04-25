@@ -21,6 +21,7 @@ import { buildLifterSlug, isNetworkError } from '@/lib/api';
 import { convertLifterWeights } from '@/lib/units';
 import { useFilterStore } from '@/stores/useFilterStore';
 import { useUnitStore, type Unit } from '@/stores/useUnitStore';
+import { useFavoriteFederationsStore } from '@/stores/useFavoriteFederationsStore';
 
 type FilterSectionKey =
   | 'sortBy'
@@ -61,10 +62,10 @@ const WEIGHT_CLASS_VALUES = [
 
 const TRADITIONAL_WEIGHT_CLASS_OPTIONS = TRADITIONAL_WEIGHT_CLASS_VALUES;
 const UNITED_STATES_FEDERATION_OPTIONS = ['All USA', 'All Tested USA', '365Strong', 'AAPF', 'AAU', 'ADAU', 'APFPF', 'AmericanSA', 'AMP' , 'AmPU' , 'APA' , 'APC', 'APF', 'APO' , 'FHSAA', 'IHSPLA' , 'IPA', 'LHSPLA', 'MHSPLA', 'MM', 'NPL', 'NASA', 'Next Gen PF', 'NMAA', 'Nor Cal', 'PLU', 'PRIDE', '100Raw', 'RawIronPL', 'RAWU', 'RPS', 'RUPC', 'SLP', 'SPF', 'SSA', 'THSPA', 'THSWPA', 'UPA', 'USAPL', 'USPA' , 'USPA Tested', 'USPC', 'USPC Tested', 'USPF', 'USSF', 'USSports', 'WABDL', 'WarriorPLF', 'WNPF', 'WP-USA', 'WRPF USA' , 'WRPF USA Tested', 'WUAP USA', 'XPC', 'XPS'];
-const INTERNATIONAL_FEDERATION_OPTIONS = ['AWPC', 'GPA', 'GPC', 'GPC and Affiliates', 'GPF', 'IBSA', 'IntDFPA', 'IPF', 'IPL', 'IRP', 'WDFPF', 'WP', 'WPA', 'WPC', 'WPF', 'WPO', 'WPPL','WPU', 'WPPO', 'WUAP',  'WRPF'];
+const INTERNATIONAL_FEDERATION_OPTIONS = ['AWPC', 'GPA', 'GPC', 'GPC and Affil.', 'GPF', 'IBSA', 'IntDFPA', 'IPF', 'IPL', 'IRP', 'WDFPF', 'WP', 'WPA', 'WPC', 'WPF', 'WPO', 'WPPL','WPU', 'WPPO', 'WUAP',  'WRPF'];
 const REGIONAL_FEDERATION_OPTIONS = ['AfricanPF', 'AsianPF', 'CommonwealthPF', 'EPF', 'FESUPO', 'NAPF', 'NordicPF', 'OceaniaPF', 'ORPF', 'WRPF-Latam', ''];
 const UK_FEDERATION_OPTIONS = ['All UK', 'All Tested UK', 'All Scottish', 'ABPU', 'BAWLA', 'BDFPA', 'BP', 'BPC', 'BPF', 'BPO', 'BPU', 'EPA', 'GPC-GB', 'GPC-SCOTLAND', 'ManxPl', 'NIPF', 'ScottishPL', 'UK IPL', 'UK IPL Tested', 'UKPU', 'UKPU Tested', 'UK-UA', 'WelshPA', 'WPRF UK', 'WRPF UK Tested'];
-const BASE_FEDERATION_OPTIONS = ['All Feds', 'All Fully-Tested Feds', 'All Tested Lifters'];
+const BASE_FEDERATION_OPTIONS = ['All Feds', 'All Fully-Tested', 'All Tested Lifters'];
 const ALGERIA_FEDERATION_OPTIONS = ['All Algeria', 'FAPL']
 const ARGENTINA_FEDERATION_OPTIONS = ['All Argentina', 'AAP', 'APUA', 'ARPL', 'FALPO', 'FEPOA', 'WWPL Argentina', 'WRPF Argentina']
 const ARMENIA_FEDERATION_OPTIONS = ['PFA']
@@ -185,7 +186,7 @@ const FEDERATION_GROUPS = [
   { key: 'belgium', label: 'Belgium', options: BELGIUM_FEDERATION_OPTIONS },
   { key: 'belize', label: 'Belize', options: BELIZE_FEDERATION_OPTIONS },
   { key: 'bolivia', label: 'Bolivia', options: BOLIVIA_FEDERATION_OPTIONS },
-  { key: 'bosniaHerzegovina', label: 'Bosnia and Herzegovina', options: BOSNIA_HERZEGOVINA_FEDERATION_OPTIONS },
+  { key: 'bosniaHerzegovina', label: 'Bosnia and Herze', options: BOSNIA_HERZEGOVINA_FEDERATION_OPTIONS },
   { key: 'brazil', label: 'Brazil', options: BRAZIL_FEDERATION_OPTIONS },
   { key: 'bulgaria', label: 'Bulgaria', options: BULGARIA_FEDERATION_OPTIONS },
   { key: 'canada', label: 'Canada', options: CANADA_FEDERATION_OPTIONS },
@@ -683,10 +684,12 @@ function FilterModal({
   const [isParaWomenExpanded, setIsParaWomenExpanded] = useState(false);
   const [isWpMenExpanded, setIsWpMenExpanded] = useState(false);
   const [isWpWomenExpanded, setIsWpWomenExpanded] = useState(false);
+  const [isFavoritesExpanded, setIsFavoritesExpanded] = useState(false);
   const [expandedFederationGroups, setExpandedFederationGroups] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(FEDERATION_GROUPS.map((group) => [group.key, false])) as Record<string, boolean>
   );
   const unit = useUnitStore((state) => state.unit);
+  const { favoriteFederations, addFavorite, removeFavorite, isFavorite } = useFavoriteFederationsStore();
   const options = FILTER_OPTIONS[activeSection];
   const currentValue = draftFilters[activeSection];
   const actionBottomGap = Math.max(bottomInset, 12);
@@ -694,9 +697,50 @@ function FilterModal({
   const isSortBySection = activeSection === 'sortBy';
   const isWeightClassSection = activeSection === 'weightClass';
   const isFederationSection = activeSection === 'federation';
+  const favoritesAnchorOption = 'All Tested Lifters';
   const sortedFederationOptions = options
     .filter((option) => !GROUPED_FEDERATION_OPTIONS.includes(option))
     .sort((a, b) => a.localeCompare(b));
+  const hasFavoritesAnchor = sortedFederationOptions.includes(favoritesAnchorOption);
+
+  const renderFavoritesGroup = () => (
+    <View style={styles.optionGroupBlock}>
+      <Pressable
+        onPress={() => setIsFavoritesExpanded((value) => !value)}
+        style={styles.optionGroupHeader}>
+        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>Favorites</Text>
+        <Ionicons
+          name={isFavoritesExpanded ? 'chevron-up' : 'chevron-down'}
+          size={16}
+          color="#9ba3c2"
+        />
+      </Pressable>
+      {isFavoritesExpanded
+        ? favoriteFederations.map((option) => {
+            const selected = option === currentValue;
+            return (
+              <View key={option} style={[styles.optionRow, styles.favoriteOptionRow]}>
+                <Pressable
+                  onPress={() => onSelectOption(activeSection, option)}
+                  style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                    {selected ? <View style={styles.radioInner} /> : null}
+                  </View>
+                  <Text style={[styles.optionText, selected && styles.optionTextSelected]}>
+                    {option}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => removeFavorite(option)}
+                  style={styles.starButton}>
+                  <Ionicons name="star" size={18} color="#e63012" />
+                </Pressable>
+              </View>
+            );
+          })
+        : null}
+    </View>
+  );
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -977,20 +1021,39 @@ function FilterModal({
                   : isFederationSection
                     ? (
                         <>
+                          {/* Non-Grouped Federations */}
                           {sortedFederationOptions.map((option) => {
                               const selected = option === currentValue;
+                              const isFav = isFavorite(option);
                               return (
-                                <Pressable
+                                <View
                                   key={option}
-                                  onPress={() => onSelectOption(activeSection, option)}
-                                  style={styles.optionRow}>
-                                  <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
-                                    {selected ? <View style={styles.radioInner} /> : null}
+                                  style={option === favoritesAnchorOption ? styles.favoritesAnchorRow : undefined}>
+                                  <View style={styles.optionRow}>
+                                    <Pressable
+                                      onPress={() => onSelectOption(activeSection, option)}
+                                      style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                                      <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                                        {selected ? <View style={styles.radioInner} /> : null}
+                                      </View>
+                                      <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
+                                    </Pressable>
+                                    <Pressable
+                                      onPress={() => (isFav ? removeFavorite(option) : addFavorite(option))}
+                                      style={styles.starButton}>
+                                      <Ionicons
+                                        name={isFav ? 'star' : 'star-outline'}
+                                        size={18}
+                                        color={isFav ? '#e63012' : '#9ba3c2'}
+                                      />
+                                    </Pressable>
                                   </View>
-                                  <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
-                                </Pressable>
+                                  {option === favoritesAnchorOption && hasFavoritesAnchor ? renderFavoritesGroup() : null}
+                                </View>
                               );
                             })}
+
+                          {!hasFavoritesAnchor ? renderFavoritesGroup() : null}
 
                           {FEDERATION_GROUPS.map((group, index) => (
                             <FederationOptionGroup
@@ -1007,6 +1070,9 @@ function FilterModal({
                                 }))
                               }
                               onSelectOption={(value) => onSelectOption(activeSection, value)}
+                              isFavorite={isFavorite}
+                              addFavorite={addFavorite}
+                              removeFavorite={removeFavorite}
                             />
                           ))}
                         </>
@@ -1061,6 +1127,9 @@ function FederationOptionGroup({
   currentValue,
   onToggle,
   onSelectOption,
+  isFavorite,
+  addFavorite,
+  removeFavorite,
 }: {
   heading: string;
   options: readonly string[];
@@ -1069,6 +1138,9 @@ function FederationOptionGroup({
   currentValue: string;
   onToggle: () => void;
   onSelectOption: (value: string) => void;
+  isFavorite: (federation: string) => boolean;
+  addFavorite: (federation: string) => void;
+  removeFavorite: (federation: string) => void;
 }) {
   return (
     <View style={[styles.optionGroupBlock, containerStyle]}>
@@ -1080,16 +1152,27 @@ function FederationOptionGroup({
       {expanded
         ? options.map((option) => {
             const selected = option === currentValue;
+            const isFav = isFavorite(option);
             return (
-              <Pressable
-                key={option}
-                onPress={() => onSelectOption(option)}
-                style={[styles.optionRow, styles.nestedOptionRow]}>
-                <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
-                  {selected ? <View style={styles.radioInner} /> : null}
-                </View>
-                <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
-              </Pressable>
+              <View key={option} style={[styles.optionRow, styles.nestedOptionRow]}>
+                <Pressable
+                  onPress={() => onSelectOption(option)}
+                  style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <View style={[styles.radioOuter, selected && styles.radioOuterSelected]}>
+                    {selected ? <View style={styles.radioInner} /> : null}
+                  </View>
+                  <Text style={[styles.optionText, selected && styles.optionTextSelected]}>{option}</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => (isFav ? removeFavorite(option) : addFavorite(option))}
+                  style={styles.starButton}>
+                  <Ionicons
+                    name={isFav ? 'star' : 'star-outline'}
+                    size={18}
+                    color={isFav ? '#e63012' : '#9ba3c2'}
+                  />
+                </Pressable>
+              </View>
             );
           })
         : null}
@@ -1601,7 +1684,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   firstFederationGroup: {
-    marginTop: 8,
+    marginTop: 0,
   },
   weightClassGroupBlock: {
     marginBottom: 0,
@@ -1630,7 +1713,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
-    gap: 10,
+    gap: 16,
+  },
+  favoritesAnchorRow: {
+    gap : 8,
   },
   nestedOptionRow: {
     paddingLeft: 10,
@@ -1661,6 +1747,21 @@ const styles = StyleSheet.create({
   optionTextSelected: {
     color: '#ffffff',
     fontWeight: '700',
+  },
+  starButton: {
+    padding: 6,
+    marginRight: 4,
+  },
+  favoritesLabel: {
+    color: '#9ba3c2',
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    marginBottom: 6,
+    letterSpacing: 0.7,
+  },
+  favoriteOptionRow: {
+    backgroundColor: 'rgba(230, 48, 18, 0.05)',
   },
   sheetFooter: {
     position: 'absolute',

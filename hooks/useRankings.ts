@@ -34,7 +34,7 @@ function normalizeFilterValue(value: string): string | undefined {
 
 const FEDERATION_REPLACEMENTS: Record<string, string> = {
     'all feds' : '',
-    'all fully-tested feds' : 'fully-tested', 
+    'all fully-tested' : 'fully-tested', 
     'all tested lifters' : 'all-tested',
     'all usa' : 'all-usa',
     'all tested usa' : 'all-usa-tested',
@@ -43,7 +43,7 @@ const FEDERATION_REPLACEMENTS: Record<string, string> = {
     'wrpf usa' : 'wrpf-usa',
     'wrpf usa tested' : 'wrpf-usa-tested',
     'wuap usa' : 'wuap-usa',
-    'gpc and affiliates' : 'gpcaff',
+    'gpc and affil.' : 'gpcaff',
     'all uk': 'all-uk',
   'all tested uk' : 'all-uk-tested',
   'all scottish' : 'all-scotland',
