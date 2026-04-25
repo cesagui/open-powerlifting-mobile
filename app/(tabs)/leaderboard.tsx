@@ -18,6 +18,7 @@ import { useRankings } from '@/hooks/useRankings';
 import type { Lifter } from '@/lib/api';
 import { formatNumber } from '@/lib/format';
 import { buildLifterSlug, isNetworkError } from '@/lib/api';
+import { logLeaderboardRequest } from '@/lib/analytics';
 import { convertLifterWeights } from '@/lib/units';
 import { useFilterStore } from '@/stores/useFilterStore';
 import { useUnitStore, type Unit } from '@/stores/useUnitStore';
@@ -372,6 +373,25 @@ export default function LeaderboardScreen() {
   }
 
   function applyDraftFilters() {
+    const hasFilterChange =
+      draftFilters.sortBy !== sortBy ||
+      draftFilters.federation !== federation ||
+      draftFilters.equipment !== equipment ||
+      draftFilters.sex !== sex ||
+      draftFilters.weightClass !== weightClass ||
+      draftFilters.liftType !== liftCriteria;
+
+    if (hasFilterChange) {
+      void logLeaderboardRequest({
+        federation: draftFilters.federation,
+        weightClass: draftFilters.weightClass,
+        sex: draftFilters.sex,
+        equipment: draftFilters.equipment,
+        liftType: draftFilters.liftType,
+        sortBy: draftFilters.sortBy,
+      });
+    }
+
     setSortBy(draftFilters.sortBy);
     setFederation(draftFilters.federation);
     setEquipment(draftFilters.equipment);
@@ -708,7 +728,7 @@ function FilterModal({
       <Pressable
         onPress={() => setIsFavoritesExpanded((value) => !value)}
         style={styles.optionGroupHeader}>
-        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>Favorites</Text>
+        <Text style={[styles.optionGroupHeading, styles.traditionalGroupHeading]}>⭐ Favorites</Text>
         <Ionicons
           name={isFavoritesExpanded ? 'chevron-up' : 'chevron-down'}
           size={16}
