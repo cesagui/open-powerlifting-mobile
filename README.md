@@ -1,13 +1,21 @@
 # OpenLiftingMobile
 
-OpenLiftingMobile is an Expo + React Native app for browsing OpenPowerlifting data on mobile.
+OpenLiftingMobile is a mobile application that improves the user experience of the open-source OpenPowerlifting website. Built with Expo and React Native, it provides a fast, intuitive interface for powerlifting enthusiasts to explore rankings, search athletes, and discover meet results on their mobile devices.
 
-It includes:
+## Features
+
 - A leaderboard with filtering, sorting, and infinite scroll
 - Lifter search with recent history
 - Athlete profile details with personal bests and meet history
 - Meet results with individual attempts
 - Unit toggle (kg/lbs) in user preferences
+- Access to 300+ federations across 60+ countries covering 100k+ athletes
+
+## Screenshots
+
+| Leaderboard | Improved Filters | Athlete Details |
+|---|---|---|
+| ![Leaderboard Screen](screenshots/leaderboard_screen.jpeg) | ![Filter Criteria](screenshots/improved_filter_criteria.jpeg) | ![Athlete Screen](screenshots/individual_screen.jpeg) |
 
 ## Tech Stack
 
@@ -70,11 +78,8 @@ npm run ios:stable
 ## Scripts
 
 - npm run start: Start Expo dev server
-- npm run start:stable: Start with conservative Metro settings
 - npm run android: Launch Android target
-- npm run android:stable: Android with conservative Metro settings
 - npm run ios: Launch iOS target
-- npm run ios:stable: iOS with conservative Metro settings
 - npm run web: Launch web target
 - npm run tunnel: Start Expo with tunnel mode
 
