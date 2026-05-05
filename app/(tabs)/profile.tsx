@@ -1,6 +1,7 @@
 import { StyleSheet, Switch, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { ExternalLink } from '@/components/ExternalLink';
 import { useUnitStore } from '@/stores/useUnitStore';
 
 export default function ProfileScreen() {
@@ -29,6 +30,15 @@ export default function ProfileScreen() {
             <Text style={styles.unitLabel}>lbs</Text>
           </View>
         </View>
+      </View>
+
+      <View style={styles.preferenceCard}>
+        <ExternalLink
+          href="https://cesagui.github.io/lift-surfer-privacy-policy/privacy-policy.html"
+          style={styles.linkRow}>
+          <MaterialCommunityIcons name="shield-lock-outline" size={22} color="#c7cde1" />
+          <Text style={styles.preferenceLabel}>Privacy Policy</Text>
+        </ExternalLink>
       </View>
     </View>
   );
@@ -64,6 +74,12 @@ const styles = StyleSheet.create({
     color: '#f5f5f5',
     fontSize: 16,
     fontWeight: '700',
+  },
+  linkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 6,
   },
   toggleRow: {
     flexDirection: 'row',
